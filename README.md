@@ -6,6 +6,8 @@ Official repository for **Paper2Poster**, a toolkit that automatically converts 
 
 ## Environment setup
 
+Install pytorch according to your cuda version.
+
 ```bash
 pip install -r requirements.txt
 ```
