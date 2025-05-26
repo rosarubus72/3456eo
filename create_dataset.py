@@ -45,11 +45,19 @@ if __name__ == "__main__":
         paper_title = data['title']
         paper_url = data['paper_url']
         poster_url = data['image_url']
+        qa = data['qa']
 
         os.makedirs(f'Paper2Poster/{paper_title}', exist_ok=True)
 
         paper_output_path = os.path.join('Paper2Poster', paper_title, 'paper.pdf')
         poster_output_path = os.path.join('Paper2Poster', paper_title, 'poster.png')
+        qa_path = os.path.join('Paper2Poster', paper_title, 'o3_qa.json')
+
+        qa_dict = json.loads(qa)
+        with open(qa_path, 'w') as f:
+            json.dump(qa_dict, f, indent=4)
+        print(f"Saved QA for {paper_title} into {qa_path}")
+
         try:
             subprocess.run(['wget', paper_url, '-O', paper_output_path], check=True)
             subprocess.run(['wget', poster_url, '-O', poster_output_path], check=True)

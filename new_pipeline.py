@@ -5,6 +5,7 @@ from tree_split_layout import main_train, main_inference, get_arrangments_in_inc
 from gen_pptx_code import generate_poster_code
 from src.utils import ppt_to_images
 from gen_poster_content import gen_bullet_point_content
+from ablation_utils import no_tree_get_layout
 
 import argparse
 import json
@@ -12,6 +13,8 @@ import os
 import time
 
 units_per_inch = 25
+
+# Create your theme profile here
 theme_title_text_color = (255, 255, 255)
 theme_title_fill_color = (47, 85, 151)
 theme = {
@@ -35,6 +38,9 @@ if __name__ == '__main__':
     parser.add_argument('--index', type=int, default=0)
     parser.add_argument('--poster_name', type=str, default=None)
     parser.add_argument('--tmp_dir', type=str, default='tmp')
+    parser.add_argument('--ablation_no_tree_layout', action='store_true', help='Ablation study: no tree layout')
+    parser.add_argument('--ablation_no_commenter', action='store_true', help='Ablation study: no commenter')
+    parser.add_argument('--ablation_no_example', action='store_true', help='Ablation study: no example')
 
     args = parser.parse_args()
 
@@ -101,27 +107,42 @@ if __name__ == '__main__':
     detail_log['outline_in_t'] = input_token
     detail_log['outline_out_t'] = output_token
 
-    # Step 4: Learn and generate layout
-    panel_model_params, figure_model_params = main_train()
+    if args.ablation_no_tree_layout:
+        panel_arrangement, figure_arrangement, text_arrangement, input_token, output_token = no_tree_get_layout(
+            poster_width, 
+            poster_height, 
+            panels, 
+            figures, 
+            agent_config_t
+        )
+        total_input_tokens_t += input_token
+        total_output_tokens_t += output_token
+        print(f'No tree layout token consumption: {input_token} -> {output_token}')
+        detail_log['no_tree_layout_in_t'] = input_token
+        detail_log['no_tree_layout_out_t'] = output_token
+    else:
 
-    panel_arrangement, figure_arrangement, text_arrangement = main_inference(
-        panels,
-        panel_model_params,
-        figure_model_params,
-        poster_width,
-        poster_height,
-        shrink_margin=3
-    )
+        # Step 4: Learn and generate layout
+        panel_model_params, figure_model_params = main_train()
 
-    text_arrangement_title = text_arrangement[0]
-    text_arrangement = text_arrangement[1:]
-    # Split the title textbox into two parts
-    text_arrangement_title_top, text_arrangement_title_bottom = split_textbox(
-        text_arrangement_title, 
-        0.8
-    )
-    # Add the split textboxes back to the list
-    text_arrangement = [text_arrangement_title_top, text_arrangement_title_bottom] + text_arrangement
+        panel_arrangement, figure_arrangement, text_arrangement = main_inference(
+            panels,
+            panel_model_params,
+            figure_model_params,
+            poster_width,
+            poster_height,
+            shrink_margin=3
+        )
+
+        text_arrangement_title = text_arrangement[0]
+        text_arrangement = text_arrangement[1:]
+        # Split the title textbox into two parts
+        text_arrangement_title_top, text_arrangement_title_bottom = split_textbox(
+            text_arrangement_title, 
+            0.8
+        )
+        # Add the split textboxes back to the list
+        text_arrangement = [text_arrangement_title_top, text_arrangement_title_bottom] + text_arrangement
 
     for i in range(len(figure_arrangement)):
         panel_id = figure_arrangement[i]['panel_id']

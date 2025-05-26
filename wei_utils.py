@@ -778,7 +778,6 @@ async def rendered_dims(html: Path) -> tuple[int, int]:
 
     
 def html_to_png(html_abs_path, poster_width_default, poster_height_default, output_path):
-    # html_file = f"file:///{html_abs_path}"
     html_file = html_abs_path
 
     try:
@@ -848,60 +847,12 @@ def get_agent_config(model_type):
             "url": 'http://localhost:8000/v1',
             'max_images': 99
         }
-    elif model_type == 'llava-v2':
-        agent_config = {
-            "model_type": "llava-hf/llava-onevision-qwen2-7b-ov-hf",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:7000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'llava-v3':
-        agent_config = {
-            "model_type": "llava-hf/llava-onevision-qwen2-7b-ov-hf",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:6000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'llava-v4':
-        agent_config = {
-            "model_type": "llava-hf/llava-onevision-qwen2-7b-ov-hf",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:5555/v1',
-            'max_images': 99
-        }
     elif model_type == 'molmo-o':
         agent_config = {
             "model_type": "allenai/Molmo-7B-O-0924",
             "model_platform": ModelPlatformType.VLLM,
             "model_config": VLLMConfig().as_dict(),
             "url": 'http://localhost:8000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'molmo-o-v2':
-        agent_config = {
-            "model_type": "allenai/Molmo-7B-O-0924",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:7000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'molmo-o-v3':
-        agent_config = {
-            "model_type": "allenai/Molmo-7B-O-0924",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:6000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'molmo-o-v4':
-        agent_config = {
-            "model_type": "allenai/Molmo-7B-O-0924",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:5555/v1',
             'max_images': 99
         }
     elif model_type == 'qwen-2-vl-7b':
@@ -912,21 +863,6 @@ def get_agent_config(model_type):
             "url": 'http://localhost:8000/v1',
             'max_images': 99
         }
-        agent_config['model_config']['temperature'] = 0
-    elif model_type == 'qwen-2-vl-7b-v2':
-        agent_config = {
-            "model_type": "Qwen/Qwen2-VL-7B-Instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:7000/v1'
-        }
-    elif model_type == 'qwen-2-vl-7b-v3':
-        agent_config = {
-            "model_type": "Qwen/Qwen2-VL-7B-Instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:6000/v1'
-        }
     elif model_type == 'vllm_phi4':
         agent_config = {
             "model_type": "microsoft/Phi-4-multimodal-instruct",
@@ -934,92 +870,6 @@ def get_agent_config(model_type):
             "model_config": VLLMConfig().as_dict(),
             "url": 'http://localhost:8000/v1',
             'max_images': 99
-        }
-    elif model_type == 'vllm_phi4_v2':
-        agent_config = {
-            "model_type": "microsoft/Phi-4-multimodal-instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:7000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'vllm_phi4_v3':
-        agent_config = {
-            "model_type": "microsoft/Phi-4-multimodal-instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:6000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'vllm_phi4_v4':
-        agent_config = {
-            "model_type": "microsoft/Phi-4-multimodal-instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:5555/v1',
-            'max_images': 99
-        }
-    elif model_type == 'intern-vl-3-8b':
-        agent_config = {
-            "model_type": "OpenGVLab/InternVL3-8B",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:8000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'intern-vl-2-5-8b':
-        agent_config = {
-            "model_type": "OpenGVLab/InternVL2_5-8B",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:8000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'intern-vl-2-8b':
-        agent_config = {
-            "model_type": "OpenGVLab/InternVL2-8B",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:8000/v1',
-            'max_images': 99
-        }
-        # agent_config['model_config']['max_tokens'] = 128000
-    elif model_type == 'intern-vl-2-8b-v2':
-        agent_config = {
-            "model_type": "OpenGVLab/InternVL2-8B",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:7000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'intern-vl-2-8b-v3':
-        agent_config = {
-            "model_type": "OpenGVLab/InternVL2-8B",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:6000/v1',
-            'max_images': 99
-        }
-    elif model_type == 'phi-3.5-v':
-        agent_config = {
-            "model_type": "microsoft/Phi-3.5-vision-instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:8000/v1'
-        }
-    elif model_type == 'phi-3.5-v-v2':
-        agent_config = {
-            "model_type": "microsoft/Phi-3.5-vision-instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:7000/v1'
-        }
-    elif model_type == 'phi-3.5-v-v3':
-        agent_config = {
-            "model_type": "microsoft/Phi-3.5-vision-instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:6000/v1'
         }
     elif model_type == 'o3-mini':
         agent_config = {
@@ -1053,13 +903,6 @@ def get_agent_config(model_type):
             "model_config": ChatGPTConfig().as_dict(),
             "model_platform": ModelPlatformType.OPENAI,
         }
-    elif model_type == 'vllm_qwen_2_vl_2b':
-        agent_config = {
-            "model_type": "Qwen/Qwen2-VL-2B-Instruct",
-            "model_platform": ModelPlatformType.VLLM,
-            "model_config": VLLMConfig().as_dict(),
-            "url": 'http://localhost:8000/v1'
-        }
     elif model_type == 'vllm_qwen_vl':
         agent_config = {
             "model_type": "Qwen/Qwen2.5-VL-7B-Instruct",
@@ -1073,7 +916,6 @@ def get_agent_config(model_type):
             "model_platform": ModelPlatformType.VLLM,
             "model_config": VLLMConfig().as_dict(),
             "url": 'http://localhost:8000/v1',
-            "token_limit": 30000
         }
     elif model_type == 'openrouter_qwen_vl_72b':
         agent_config = {

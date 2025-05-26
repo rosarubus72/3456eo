@@ -317,9 +317,11 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
             bullet_content = bullet_contents[j]
             curr_round = 0
             while True:
+                if args.ablation_no_commenter:
+                    break
                 curr_round += 1
                 img = render_textbox(text_arrangement, result_json[bullet_content], tmp_dir)
-                if args.model_name_v.startswith('vllm_qwen'):
+                if args.model_name_v.startswith('vllm_qwen') or args.ablation_no_example:
                     critic_msg = BaseMessage.make_user_message(
                         role_name="User",
                         content=critic_prompt,
