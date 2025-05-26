@@ -1,11 +1,11 @@
-from parse_raw import parse_raw, gen_image_and_table
-from gen_outline_layout import filter_image_table, gen_outline_layout_v2
-from wei_utils import get_agent_config, utils_functions, run_code, style_bullet_content, scale_to_target_area
-from tree_split_layout import main_train, main_inference, get_arrangments_in_inches, split_textbox, to_inches
-from gen_pptx_code import generate_poster_code
-from src.utils import ppt_to_images
-from gen_poster_content import gen_bullet_point_content
-from ablation_utils import no_tree_get_layout
+from PosterAgent.parse_raw import parse_raw, gen_image_and_table
+from PosterAgent.gen_outline_layout import filter_image_table, gen_outline_layout_v2
+from utils.wei_utils import get_agent_config, utils_functions, run_code, style_bullet_content, scale_to_target_area
+from PosterAgent.tree_split_layout import main_train, main_inference, get_arrangments_in_inches, split_textbox, to_inches
+from PosterAgent.gen_pptx_code import generate_poster_code
+from utils.src.utils import ppt_to_images
+from PosterAgent.gen_poster_content import gen_bullet_point_content
+from utils.ablation_utils import no_tree_get_layout
 
 import argparse
 import json

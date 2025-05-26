@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-from src.utils import get_json_from_response
-from src.model_utils import parse_pdf
+from utils.src.utils import get_json_from_response
+from utils.src.model_utils import parse_pdf
 import json
 import random
 
@@ -18,10 +18,10 @@ import PIL
 
 from marker.models import create_model_dict
 
-from wei_utils import *
+from utils.wei_utils import *
 
-from pptx_utils import *
-from critic_utils import *
+from utils.pptx_utils import *
+from utils.critic_utils import *
 import torch
 from jinja2 import Template
 import re
@@ -56,9 +56,9 @@ def parse_raw(args, actor_config, version=1):
         text_content, rendered = parse_pdf(raw_source, model_lst=parser_model, save_file=False)
 
     if version == 1:
-        template = Template(open("prompts/gen_poster_raw_content.txt").read())
+        template = Template(open("utils/prompts/gen_poster_raw_content.txt").read())
     elif version == 2:
-        template = Template(open("prompts/gen_poster_raw_content_v2.txt").read())
+        template = Template(open("utils/prompts/gen_poster_raw_content_v2.txt").read())
 
     if args.model_name_t.startswith('vllm_qwen'):
         actor_model = ModelFactory.create(

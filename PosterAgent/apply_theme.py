@@ -1,18 +1,18 @@
 from dotenv import load_dotenv
-from src.utils import ppt_to_images, get_json_from_response
+from utils.src.utils import ppt_to_images, get_json_from_response
 import json
 import shutil
 
 from camel.models import ModelFactory
 from camel.agents import ChatAgent
 
-from wei_utils import *
+from utils.wei_utils import *
 
 from camel.messages import BaseMessage
 from PIL import Image
 import pickle as pkl
-from pptx_utils import *
-from critic_utils import *
+from utils.pptx_utils import *
+from utils.critic_utils import *
 import yaml
 from jinja2 import Environment, StrictUndefined
 from pdf2image import convert_from_path

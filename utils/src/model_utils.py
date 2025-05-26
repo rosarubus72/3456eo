@@ -13,8 +13,8 @@ from PIL import Image
 from torchvision.transforms.functional import InterpolationMode
 from transformers import AutoFeatureExtractor, AutoModel
 
-from src.presentation import Presentation, SlidePage
-from src.utils import is_image_path, pjoin
+from utils.src.presentation import Presentation, SlidePage
+from utils.src.utils import is_image_path, pjoin
 
 device_count = torch.cuda.device_count()
 

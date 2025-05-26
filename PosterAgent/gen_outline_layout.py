@@ -5,14 +5,14 @@ import copy
 import yaml
 from jinja2 import Environment, StrictUndefined
 
-from src.utils import ppt_to_images, get_json_from_response
+from utils.src.utils import ppt_to_images, get_json_from_response
 
 from camel.models import ModelFactory
 from camel.agents import ChatAgent
 from camel.messages import BaseMessage
 
-from pptx_utils import *
-from wei_utils import *
+from utils.pptx_utils import *
+from utils.wei_utils import *
 
 import pickle as pkl
 import argparse
@@ -247,7 +247,7 @@ def filter_image_table(args, filter_config):
     tables = json.load(open(f'<{args.model_name_t}_{args.model_name_v}>_images_and_tables/{args.poster_name}_tables.json', 'r'))
     doc_json = json.load(open(f'contents/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_raw_content.json', 'r'))
     agent_filter = 'image_table_filter_agent'
-    with open(f"prompt_templates/{agent_filter}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_filter}.yaml", "r") as f:
         config_filter = yaml.safe_load(f)
 
     image_information = {}
@@ -326,7 +326,7 @@ def gen_outline_layout_v2(args, actor_config):
             v['caption']
         }
 
-    with open(f"prompt_templates/{agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_name}.yaml", "r") as f:
         planner_config = yaml.safe_load(f)
 
     compute_tp(doc_json)
@@ -450,19 +450,19 @@ def gen_outline_layout(args, actor_config, critic_config):
     filtered_table_information = json.load(open(f'images_and_tables/{args.poster_name}_tables_filtered.json', 'r'))
     filtered_image_information = json.load(open(f'images_and_tables/{args.poster_name}_images_filtered.json', 'r'))
 
-    with open(f"prompt_templates/{agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_name}.yaml", "r") as f:
         planner_config = yaml.safe_load(f)
 
-    with open(f"prompt_templates/{agent_init_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_init_name}.yaml", "r") as f:
         config_init = yaml.safe_load(f)
 
-    with open(f"prompt_templates/{agent_new_section_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_new_section_name}.yaml", "r") as f:
         config_new_section = yaml.safe_load(f)
 
-    with open(f"prompt_templates/{h1_critic_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{h1_critic_name}.yaml", "r") as f:
         config_h1_critic = yaml.safe_load(f)
 
-    with open(f"prompt_templates/{h2_actor_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{h2_actor_name}.yaml", "r") as f:
         config_h2_actor = yaml.safe_load(f)
 
     planner_model = ModelFactory.create(
@@ -520,8 +520,8 @@ def gen_outline_layout(args, actor_config, critic_config):
         message_window_size=None,
     )
 
-    h1_pos_example = Image.open('h1_example/h1_pos.jpg')
-    h1_neg_example = Image.open('h1_example/h1_neg.jpg')
+    h1_pos_example = Image.open('assets/h1_example/h1_pos.jpg')
+    h1_neg_example = Image.open('assets/h1_example/h1_neg.jpg')
 
     h2_actor_model = ModelFactory.create(
         model_platform=actor_config['model_platform'],

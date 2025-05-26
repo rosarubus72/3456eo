@@ -1,18 +1,18 @@
 from dotenv import load_dotenv
-from src.utils import get_json_from_response
+from utils.src.utils import get_json_from_response
 
 from camel.models import ModelFactory
 from camel.agents import ChatAgent
 
 
-from wei_utils import account_token, get_agent_config, html_to_png
+from utils.wei_utils import account_token, get_agent_config, html_to_png
 
-from pptx_utils import *
-from critic_utils import *
+from utils.pptx_utils import *
+from utils.critic_utils import *
 import yaml
 import time
 from jinja2 import Environment, StrictUndefined
-from poster_eval_utils import get_poster_text
+from utils.poster_eval_utils import get_poster_text
 import argparse
 import json
 import os

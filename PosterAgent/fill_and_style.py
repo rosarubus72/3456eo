@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-from src.utils import ppt_to_images, get_json_from_response
+from utils.src.utils import ppt_to_images, get_json_from_response
 import json
 import pptx
 
@@ -9,14 +9,14 @@ from camel.types import ModelPlatformType, ModelType
 from camel.configs import ChatGPTConfig, QwenConfig
 from camel.agents import ChatAgent
 
-from wei_utils import fill_content
+from utils.wei_utils import fill_content
 
 from camel.messages import BaseMessage
 from PIL import Image
 import pickle as pkl
-from pptx_utils import *
-from critic_utils import *
-from wei_utils import *
+from utils.pptx_utils import *
+from utils.critic_utils import *
+from utils.wei_utils import *
 import importlib
 import yaml
 import os

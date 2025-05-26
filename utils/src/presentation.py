@@ -17,7 +17,7 @@ from pptx.slide import Slide as PPTXSlide
 from pptx.text.text import _Paragraph, _Run
 from rich import print
 
-from src.utils import (
+from utils.src.utils import (
     IMAGE_EXTENSIONS,
     Config,
     apply_fill,

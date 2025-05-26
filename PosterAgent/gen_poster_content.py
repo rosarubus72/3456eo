@@ -1,19 +1,19 @@
 from dotenv import load_dotenv
-from src.utils import get_json_from_response
+from utils.src.utils import get_json_from_response
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 
 from camel.models import ModelFactory
-from gen_pptx_code import generate_poster_code
+from PosterAgent.gen_pptx_code import generate_poster_code
 from camel.agents import ChatAgent
 from camel.messages import BaseMessage
-from src.utils import ppt_to_images
+from utils.src.utils import ppt_to_images
 from PIL import Image
 
-from wei_utils import *
+from utils.wei_utils import *
 
-from pptx_utils import *
-from critic_utils import *
+from utils.pptx_utils import *
+from utils.critic_utils import *
 import yaml
 from jinja2 import Environment, StrictUndefined
 import argparse
@@ -164,7 +164,7 @@ def gen_poster_title_content(args, actor_config):
 
     title_string = raw_content['meta']
 
-    with open(f'prompt_templates/{actor_agent_name}.yaml', "r") as f:
+    with open(f'utils/prompt_templates/{actor_agent_name}.yaml', "r") as f:
         content_config = yaml.safe_load(f)
     jinja_env = Environment(undefined=StrictUndefined)
     template = jinja_env.from_string(content_config["template"])
@@ -218,10 +218,10 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
     
     panels = tree_split_results['panels']
 
-    with open(f"prompt_templates/{actor_agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{actor_agent_name}.yaml", "r") as f:
         content_config = yaml.safe_load(f)
 
-    with open(f"prompt_templates/{critic_agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{critic_agent_name}.yaml", "r") as f:
         critic_content_config = yaml.safe_load(f)
 
     jinja_env = Environment(undefined=StrictUndefined)
@@ -274,8 +274,8 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
 
     bullet_point_content = []
 
-    neg_img = Image.open('overflow_example_v2/neg.jpg')
-    pos_img = Image.open('overflow_example_v2/pos.jpg')
+    neg_img = Image.open('assets/overflow_example_v2/neg.jpg')
+    pos_img = Image.open('assets/overflow_example_v2/pos.jpg')
 
     text_arrangement_list = tree_split_results['text_arrangement_inches']
     text_arrangement_index = 2 # Skip the poster title and author and the first section title
@@ -386,7 +386,7 @@ def gen_poster_content(args, actor_config):
     raw_content = json.load(open(f'contents/{args.model_name}_{args.poster_name}_raw_content.json', 'r'))
     agent_name = 'poster_content_agent'
 
-    with open(f"prompt_templates/{agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_name}.yaml", "r") as f:
         content_config = yaml.safe_load(f)
 
     actor_model = ModelFactory.create(

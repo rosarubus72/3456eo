@@ -298,7 +298,7 @@ def train_figure_model(figure_records):
 
 
 def main_train():
-    poster_dataset_path = 'poster_data/Train'
+    poster_dataset_path = 'assets/poster_data/Train'
     # loop through all folders in the dataset
     xml_files = []
     for folder in os.listdir(poster_dataset_path):

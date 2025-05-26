@@ -1,6 +1,6 @@
-from poster_eval_utils import *
+from utils.poster_eval_utils import *
 import json
-from wei_utils import get_agent_config
+from utils.wei_utils import get_agent_config
 import argparse
 from dotenv import load_dotenv
 import tempfile
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     parser.add_argument('--paper_name', type=str)
     parser.add_argument('--base_dir', type=str, default='Paper2Poster')
     parser.add_argument('--poster_method', type=str)
-    parser.add_argument('--poster_image_name', type=str, choices=['poster.png'])
+    parser.add_argument('--poster_image_name', type=str, default='poster.png', choices=['poster.png'])
     parser.add_argument('--metric', type=str, choices=['stats', 'qa', 'judge', 'word_count', 'token_count', 'figure_count', 'aesthetic_judge'], default='stats')
     parser.add_argument('--fix', type=str, default=None)
     parser.add_argument('--del_model_name', type=str, default=None)
@@ -144,8 +144,8 @@ if __name__ == '__main__':
     raw_poster_path = f'{args.base_dir}/{args.paper_name}/poster.png'
     raw_folder = f'{args.base_dir}/{args.paper_name}'
 
-    gen_poster_path = f'{args.poster_method}/{args.paper_name}/{args.poster_image_name}'
-    gen_folder = f'{args.poster_method}/{args.paper_name}'
+    gen_poster_path = f'{args.poster_method}/{args.base_dir}/{args.paper_name}/{args.poster_image_name}'
+    gen_folder = f'{args.poster_method}/{args.base_dir}/{args.paper_name}'
 
     save_path = f'eval_results/{args.paper_name}/{args.poster_method}'
     os.makedirs(save_path, exist_ok=True)

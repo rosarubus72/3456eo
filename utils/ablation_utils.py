@@ -1,10 +1,11 @@
-from wei_utils import *
 import yaml
+import json
+from utils.wei_utils import account_token
 from jinja2 import Environment, StrictUndefined
 from camel.models import ModelFactory
 from camel.agents import ChatAgent
 from camel.messages import BaseMessage
-from src.utils import get_json_from_response
+from utils.src.utils import get_json_from_response
 
 def no_tree_get_layout(poster_width, poster_height, panels, figures, agent_config):
     total_input_token, total_output_token = 0, 0

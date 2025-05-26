@@ -1,4 +1,4 @@
-from poster_eval_utils import *
+from utils.poster_eval_utils import *
 import argparse
 import os
 import json
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     elif args.model_name == 'o3':
         model_type = ModelType.O3
     detail_qa = get_questions(paper_text, 'detail', model_type)
-    understanding_qa = get_questions(paper_text, 'understanding', ModelType.GPT_4O)
+    understanding_qa = get_questions(paper_text, 'understanding', model_type)
 
     detail_q, detail_a, detail_aspects = get_answers_and_remove_answers(detail_qa)
     understanding_q, understanding_a, understanding_aspects = get_answers_and_remove_answers(understanding_qa)

@@ -8,7 +8,7 @@ from camel.models import ModelFactory
 from math import ceil
 from openai import OpenAI
 from camel.messages import BaseMessage
-from src.model_utils import parse_pdf
+from utils.src.model_utils import parse_pdf
 from urllib.parse import unquote
 from copy import deepcopy
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -20,13 +20,13 @@ from docling.document_converter import DocumentConverter, PdfFormatOption
 import re
 import shutil
 import pytesseract
-from wei_utils import account_token
+from utils.wei_utils import account_token
 from camel.types import ModelPlatformType, ModelType
 from marker.models import create_model_dict
 from camel.configs import ChatGPTConfig
 from camel.agents import ChatAgent
 from jinja2 import Environment, StrictUndefined
-from src.utils import get_json_from_response
+from utils.src.utils import get_json_from_response
 from pathlib import Path
 from docling_core.types.doc import ImageRefMode, PictureItem, TableItem
 from collections import defaultdict
@@ -806,27 +806,15 @@ def ensure_under_limit_pil(img, max_bytes: int = 10 * 1024 * 1024) -> Image.Imag
 
 def eval_qa_get_answer(poster_input, questions, answers, aspects, input_type, agent_config):
     agent_name = f'answer_question_from_{input_type}'
-    with open(f"prompt_templates/{agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_name}.yaml", "r") as f:
         config = yaml.safe_load(f)
 
     if agent_config['model_platform'].is_vllm:
-        # actor_model = ModelFactory.create(
-        #     model_platform=agent_config['model_platform'],
-        #     model_type=agent_config['model_type'],
-        #     model_config_dict=agent_config['model_config'],
-        #     url=agent_config['url'],
-        # )
-
         actor_model = ModelFactory.create(
             model_platform=agent_config['model_platform'],
             model_type=agent_config['model_type'],
             model_config_dict=agent_config['model_config'],
-            url=random.choice([
-                'http://localhost:6000/v1',
-                'http://localhost:8000/v1',
-                'http://localhost:7000/v1',
-                'http://localhost:5555/v1',
-            ]),
+            url=agent_config['url'],
         )
     else:
         actor_model = ModelFactory.create(
@@ -1070,7 +1058,7 @@ def gen_eval_markdown(paper_name, poster_method, poster_path, figure_count_only=
         poster_path = unique_pdf
     IMAGE_RESOLUTION_SCALE = 5.0
     agent_name = f'image_captioner'
-    with open(f"prompt_templates/{agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_name}.yaml", "r") as f:
         config = yaml.safe_load(f)
     actor_model = ModelFactory.create(
         model_platform=ModelPlatformType.OPENAI,
@@ -1196,7 +1184,7 @@ def get_questions(paper_text, mode, model_type):
     from dotenv import load_dotenv
     load_dotenv()
     agent_name = f'generate_question_{mode}'
-    with open(f"prompt_templates/{agent_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{agent_name}.yaml", "r") as f:
         config = yaml.safe_load(f)
 
     actor_model = ModelFactory.create(
@@ -1233,7 +1221,7 @@ def eval_vlm_as_judge_aspect(poster_image_list, agent_config, eval_aspect):
     )
 
     judge_name = f'{eval_aspect}_judge'
-    with open(f"prompt_templates/{judge_name}.yaml", "r") as f:
+    with open(f"utils/prompt_templates/{judge_name}.yaml", "r") as f:
         judge_config = yaml.safe_load(f)
     
     judge_sys_msg = judge_config['system_prompt']

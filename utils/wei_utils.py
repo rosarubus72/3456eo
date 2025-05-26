@@ -15,14 +15,13 @@ from PIL import Image
 import os
 import copy
 import io
-from src.utils import ppt_to_images
+from utils.src.utils import ppt_to_images
 from playwright.sync_api import sync_playwright
 from pathlib import Path
 from playwright.async_api import async_playwright
 import asyncio
-import pptx
-from pptx_utils import *
-from critic_utils import *
+from utils.pptx_utils import *
+from utils.critic_utils import *
 
 def match_response(response):
     response_text = response.msgs[0].content
