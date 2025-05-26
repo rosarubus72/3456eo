@@ -73,7 +73,7 @@ python -m PosterAgent.new_pipeline \
     --model_name_v="4o"   # VLM
 ```
 
-PosterAgent supports flexible combination of LLM/VLM, feel free to try other options, or customize your own settings in `get_agent_config()`.
+PosterAgent supports flexible combination of LLM/VLM, feel free to try other options, or customize your own settings in `get_agent_config()` in `utils/wei_utils.py`.
 
 ## 🔮 Evaluation
 To evaluate a generated poster with **PaperQuiz**:
