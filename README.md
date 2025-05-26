@@ -33,8 +33,6 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 ## 🔧 Environment setup
 
-Install pytorch according to your cuda version.
-
 ```bash
 pip install -r requirements.txt
 ```
