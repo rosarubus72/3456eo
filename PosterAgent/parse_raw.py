@@ -104,6 +104,7 @@ def parse_raw(args, actor_config, version=1):
         selected_sections = content_json['sections'][:2] + random.sample(content_json['sections'][2:-2], 5) + content_json['sections'][-2:]
         content_json['sections'] = selected_sections
 
+    os.makedirs('contents', exist_ok=True)
     json.dump(content_json, open(f'contents/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_raw_content.json', 'w'), indent=4)
     return input_token, output_token, raw_result
 

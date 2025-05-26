@@ -5,6 +5,7 @@ ablations/
 **/__pycache__/
 *_generated_posters/
 *_images_and_tables/
-contents/*
+contents/
 tmp/
-tree_splits/*
+tree_splits/
+eval_results/

@@ -182,6 +182,7 @@ if __name__ == '__main__':
         'figure_arrangement_inches': figure_arrangement_inches,
         'text_arrangement_inches': text_arrangement_inches,
     }
+    os.makedirs('tree_splits', exist_ok=True)
     with open(f'tree_splits/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_tree_split_{args.index}.json', 'w') as f:
         json.dump(tree_split_results, f, indent=4)
 
