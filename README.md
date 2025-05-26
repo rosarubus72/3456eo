@@ -70,7 +70,7 @@ To generate a poster using PosterAgent with Qwen-2.5-7B-Instruct and GPT-4o:
 python -m PosterAgent.new_pipeline \
     --poster_path="Paper2Poster/${paper_name}/paper.pdf" \
     --model_name_t="vllm_qwen" \ # LLM
-    --model_name_v="4o"   # VLM
+    --model_name_v="4o"          # VLM
 ```
 
 PosterAgent supports flexible combination of LLM/VLM, feel free to try other options, or customize your own settings in `get_agent_config()` in `utils/wei_utils.py`.
