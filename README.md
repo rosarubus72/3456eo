@@ -13,8 +13,8 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 ## 🗺️ Outline
 
 - [📚 Introduction](#-introduction)
-- [🔧 Environment setup](#-environment setup)
-- [🕹️ Run PosterAgent](#-run posteragent)
+- [🔧 Environment setup](#-environment-setup)
+- [🕹️ Run PosterAgent](#-run-posteragent)
 - [🔮 Evaluation](#-evaluation)
 ---
 
