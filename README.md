@@ -12,7 +12,7 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 <!--## 📚 Introduction-->
 
-**PosterAgent**: A top-down, visual-in-the-loop, multi-agent system for efficient poster automation (support local deployment).
+**PosterAgent**: A top-down, visual-in-the-loop, multi-agent system for efficient poster automation.
 
 ![PosterAgent Overview](./assets/posteragent.png)
 
@@ -31,19 +31,13 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 ---
 
 ## 🔧 Environment
+Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html)) or API-based access (e.g., GPT-4o).
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Our Paper2Poster system supports both local deployment (such as Qwen-2.5) and API-based access (such as GPT-4o).
-
-- **Qwen-2.5**: ensure the environment support [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html).
-```
-pip install vllm==0.6.6.post1
-```
-
-- **GPT-4o**: create a `.env` file in the project root and add your OpenAI API key:
+Create a `.env` file in the project root and add your OpenAI API key:
 
 ```bash
 OPENAI_API_KEY=<your_openai_api_key>
@@ -51,14 +45,8 @@ OPENAI_API_KEY=<your_openai_api_key>
 
 ---
 
-### Setup Datasets
-Download Paper2Poster evaluation dataset via:
-```bash
-python -m PosterAgent.create_dataset
-```
-
 ## 🕹️ Run PosterAgent
-- (Recommended) Generate a poster using PosterAgent with Qwen-2.5-7B-Instruct and GPT-4o:
+- (Recommended) Generate a poster with `Qwen-2.5-7B-Instruct` and `GPT-4o`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
@@ -67,7 +55,7 @@ python -m PosterAgent.new_pipeline \
     --model_name_v="4o"          # VLM
 ```
 
-- (Purely open-source) Generate a poster using PosterAgent with Qwen-2.5-7B-Instruct:
+- (Local) Generate a poster with `Qwen-2.5-7B-Instruct`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
@@ -76,18 +64,14 @@ python -m PosterAgent.new_pipeline \
     --model_name_v="vllm_qwen_vl"          # VLM
 ```
 
-- (Purely API) To generate a poster using PosterAgent with GPT-4o:
-
-```bash
-python -m PosterAgent.new_pipeline \
-    --poster_path="Paper2Poster/${paper_name}/paper.pdf" \
-    --model_name_t="4o" \ # LLM
-    --model_name_v="4o"   # VLM
-```
-
 PosterAgent **supports flexible combination of LLM / VLM**, feel free to try other options, or customize your own settings in `get_agent_config()` in [`utils/wei_utils.py`](Paper2Poster/blob/main/utils/wei_utils.py).
 
 ## 🔮 Evaluation
+Download Paper2Poster evaluation dataset via:
+```bash
+python -m PosterAgent.create_dataset
+```
+
 To evaluate a generated poster with **PaperQuiz**:
 ```bash
 python -m Paper2Poster-eval.eval_poster_pipeline \
