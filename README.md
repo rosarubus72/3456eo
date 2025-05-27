@@ -46,22 +46,53 @@ OPENAI_API_KEY=<your_openai_api_key>
 ---
 
 ## 🚀 Quick Start
+Create a folder named after your `paper_name`, and place your paper inside it as a PDF file named `paper.pdf`.
+In our examples, papers are stored under a directory called `Paper2Poster-data`.
+
+To use open-source models, you need to first deploy them using [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html), ensuring the port is correctly specified in the `get_agent_config()` function in [`utils/wei_utils.py`](utils/wei_utils.py).
+
+- (Quick Start) Generate a poster with `GPT-4o`:
+
+```bash
+python -m PosterAgent.new_pipeline \
+    --poster_path="Paper2Poster-data/${paper_name}/paper.pdf" \
+    --model_name_t="4o" \  # LLM
+    --model_name_v="4o" \  # VLM
+    --poster_width_inches=48 \
+    --poster_height_inches=36
+```
+
 - (Recommended) Generate a poster with `Qwen-2.5-7B-Instruct` and `GPT-4o`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
-    --poster_path="Paper2Poster/${paper_name}/paper.pdf" \
-    --model_name_t="vllm_qwen" \ # LLM
-    --model_name_v="4o"          # VLM
+    --poster_path="Paper2Poster-data/${paper_name}/paper.pdf" \
+    --model_name_t="vllm_qwen" \  # LLM
+    --model_name_v="4o" \         # VLM
+    --poster_width_inches=48 \
+    --poster_height_inches=36
 ```
 
 - (Local) Generate a poster with `Qwen-2.5-7B-Instruct`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
-    --poster_path="Paper2Poster/${paper_name}/paper.pdf" \
-    --model_name_t="vllm_qwen" \ # LLM
-    --model_name_v="vllm_qwen_vl"          # VLM
+    --poster_path="Paper2Poster-data/${paper_name}/paper.pdf" \
+    --model_name_t="vllm_qwen" \           # LLM
+    --model_name_v="vllm_qwen_vl" \        # VLM
+    --poster_width_inches=48 \
+    --poster_height_inches=36
+```
+
+- (High Performance) Generate a poster with closed-source models:
+
+```bash
+python -m PosterAgent.new_pipeline \
+    --poster_path="Paper2Poster-data/${paper_name}/paper.pdf" \
+    --model_name_t="o3" \ # LLM
+    --model_name_v="o3" \ # VLM
+    --poster_width_inches=48 \
+    --poster_height_inches=36
 ```
 
 PosterAgent **supports flexible combination of LLM / VLM**, feel free to try other options, or customize your own settings in `get_agent_config()` in [`utils/wei_utils.py`](utils/wei_utils.py).
