@@ -1,4 +1,4 @@
-# 🎓Paper2Poster: Multimodal Poster Automation from Papers
+# 🎓Paper2Poster: Multimodal Poster Automation from Scientific Papers
 
 <p align="center">
   <a href="" target="_blank"><img src="https://img.shields.io/badge/arXiv-xxx-red"></a>
