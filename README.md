@@ -103,6 +103,9 @@ python -m Paper2Poster-eval.create_paper_questions \
     --paper_folder="Paper2Poster/${paper_name}"
 ```
 
+## ❤ Acknowledgement
+We extend our gratitude to [🦉OWL](https://github.com/camel-ai/owl) for providing their codebase.
+
 ## 📖 Citation
 
 Please kindly cite our paper if you find this project helpful.
