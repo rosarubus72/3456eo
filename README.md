@@ -12,7 +12,7 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 <!--## 📚 Introduction-->
 
-**PosterAgent**: A top-down, visual-in-the-loop, multi-agent system for efficient poster automation (support vLLM local deployment).
+**PosterAgent**: A top-down, visual-in-the-loop, multi-agent system for efficient poster automation (support local deployment).
 
 ![PosterAgent Overview](./assets/posteragent.png)
 
