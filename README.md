@@ -20,14 +20,13 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 ## 📚 Introduction
 
-**Paper2Poster:** _A benchmark for paper to poster generation, paired with human generated poster, with a comprehensive evaluation suite_, including metrics like **Visual Quality**, **Textual Coherence**, **VLM-as-Judge** and **PaperQuiz**. Notably, PaperQuiz is a novel evaluation which assume _A Good poster should convey core paper content visually_.
+![PaperCoder Overview](./assets/posteragent.png)
 
+**PosterAgent:** A Top-down, visual-in-the-loop, efficient multi-agent pipeline, which includes (a) Parser distills the paper into a structured asset library; the (b) Planner aligns text–visual pairs into a binary‐tree layout that preserves reading order and spatial balance; and the (c) Painter-Commentor loop refines each panel by executing rendering code and using VLM feedback to eliminate overflow and ensure alignment.
 
 ![PaperCoder Overview](./assets/paperquiz.png)
 
-**PosterAgent:** _A Top-down, visual-in-the-loop, efficient multi-agent pipeline_, which includes (a) Parser distills the paper into a structured asset library; the (b) Planner aligns text–visual pairs into a binary‐tree layout that preserves reading order and spatial balance; and the (c) Painter-Commentor loop refines each panel by executing rendering code and using VLM feedback to eliminate overflow and ensure alignment.
-
-![PaperCoder Overview](./assets/posteragent.png)
+**Paper2Poster:** A benchmark for paper to poster generation, paired with human generated poster, with a comprehensive evaluation suite, including metrics like **Visual Quality**, **Textual Coherence**, **VLM-as-Judge** and **PaperQuiz**. Notably, PaperQuiz is a novel evaluation which assume A Good poster should convey core paper content visually.
 
 ---
 
