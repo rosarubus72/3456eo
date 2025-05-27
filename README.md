@@ -64,7 +64,7 @@ python -m PosterAgent.new_pipeline \
     --model_name_v="vllm_qwen_vl"          # VLM
 ```
 
-PosterAgent **supports flexible combination of LLM / VLM**, feel free to try other options, or customize your own settings in `get_agent_config()` in [`utils/wei_utils.py`](Paper2Poster/utils/wei_utils.py).
+PosterAgent **supports flexible combination of LLM / VLM**, feel free to try other options, or customize your own settings in `get_agent_config()` in [`utils/wei_utils.py`](utils/wei_utils.py).
 
 ## 🔮 Evaluation
 Download Paper2Poster evaluation dataset via:
