@@ -12,7 +12,7 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 <!--## 📚 Introduction-->
 
-**PosterAgent**: A top-down, visual feedback, multi-agent system for efficient poster automation (`paper.pdf`->`poster.pptx`).
+**PosterAgent** is a top-down, visual-in-the-loop multi-agent system from `paper.pdf` to `poster.pptx`.
 
 ![PosterAgent Overview](./assets/posteragent.png)
 
