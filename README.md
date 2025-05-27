@@ -37,14 +37,14 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 pip install -r requirements.txt
 ```
 
-Our Paper2Poster supports both local Qwen-2.5-based and API-based GPT-4o variants.
+Our Paper2Poster system supports both local deployment (such as Qwen-2.5) and API-based access (such as GPT-4o).
 
-### Qwen2.5 (vLLM)
+- **Qwen-2.5**: ensure the environment support [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html).
+```
+pip install vllm==0.6.6.post1
+```
 
-
-### GPT-4o
-
-Create a `.env` file in the project root and add your OpenAI API key:
+- **GPT-4o**: create a `.env` file in the project root and add your OpenAI API key:
 
 ```bash
 OPENAI_API_KEY=<your_openai_api_key>
@@ -53,7 +53,7 @@ OPENAI_API_KEY=<your_openai_api_key>
 ---
 
 ### Setup Datasets
-To download Paper2Poster dataset:
+Download Paper2Poster evaluation dataset via:
 ```bash
 python -m PosterAgent.create_dataset
 ```
@@ -76,7 +76,7 @@ python -m PosterAgent.new_pipeline \
     --model_name_v="4o"          # VLM
 ```
 
-PosterAgent supports flexible combination of LLM/VLM, feel free to try other options, or customize your own settings in `get_agent_config()` in `utils/wei_utils.py`.
+PosterAgent supports flexible combination of LLM / VLM, feel free to try other options, or customize your own settings in `get_agent_config()` in `utils/wei_utils.py`.
 
 ## 🔮 Evaluation
 To evaluate a generated poster with **PaperQuiz**:
