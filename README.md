@@ -1,4 +1,4 @@
-# 🎓Paper2Poster: Towards Multimodal Poster Automation from Scientific Papers
+# 🎓Paper2Poster: Multimodal Poster Automation from Papers
 
 <p align="center">
   <a href="" target="_blank"><img src="https://img.shields.io/badge/arXiv-xxx-red"></a>
@@ -8,29 +8,29 @@
 
 We address **How to create a poster from a paper** and **How to evaluate poster.**
 
-![PaperCoder Overview](./assets/overall.png)
+![Overview](./assets/overall.png)
+
+<!--## 📚 Introduction-->
+
+**PosterAgent**: A top-down, visual-in-the-loop, multi-agent system for efficient poster automation (support vLLM local deployment).
+
+![PosterAgent Overview](./assets/posteragent.png)
+
+<!--A Top-down, visual-in-the-loop, efficient multi-agent pipeline, which includes (a) Parser distills the paper into a structured asset library; the (b) Planner aligns text–visual pairs into a binary‐tree layout that preserves reading order and spatial balance; and the (c) Painter-Commentor loop refines each panel by executing rendering code and using VLM feedback to eliminate overflow and ensure alignment.-->
+
+<!--![Paper2Poster Overview](./assets/paperquiz.png)-->
+
+<!--**Paper2Poster:** A benchmark for paper to poster generation, paired with human generated poster, with a comprehensive evaluation suite, including metrics like **Visual Quality**, **Textual Coherence**, **VLM-as-Judge** and **PaperQuiz**. Notably, PaperQuiz is a novel evaluation which assume A Good poster should convey core paper content visually.-->
 
 ## 🗺️ Outline
 
-- [📚 Introduction](#-introduction)
-- [🔧 Environment setup](#-environment-setup)
+<!--- [📚 Introduction](#-introduction)-->
+- [🔧 Environment](#-environment)
 - [🕹️ Run PosterAgent](#-run-posteragent)
 - [🔮 Evaluation](#-evaluation)
 ---
 
-## 📚 Introduction
-
-![PaperCoder Overview](./assets/posteragent.png)
-
-**PosterAgent:** A Top-down, visual-in-the-loop, efficient multi-agent pipeline, which includes (a) Parser distills the paper into a structured asset library; the (b) Planner aligns text–visual pairs into a binary‐tree layout that preserves reading order and spatial balance; and the (c) Painter-Commentor loop refines each panel by executing rendering code and using VLM feedback to eliminate overflow and ensure alignment.
-
-![PaperCoder Overview](./assets/paperquiz.png)
-
-**Paper2Poster:** A benchmark for paper to poster generation, paired with human generated poster, with a comprehensive evaluation suite, including metrics like **Visual Quality**, **Textual Coherence**, **VLM-as-Judge** and **PaperQuiz**. Notably, PaperQuiz is a novel evaluation which assume A Good poster should convey core paper content visually.
-
----
-
-## 🔧 Environment setup
+## 🔧 Environment
 
 ```bash
 pip install -r requirements.txt
