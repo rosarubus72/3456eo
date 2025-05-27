@@ -37,13 +37,14 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 pip install -r requirements.txt
 ```
 
-### OpenAI API key
 Our Paper2Poster supports both local Qwen-2.5-based and API-based GPT-4o variants.
 
-- Qwen2.5 (vLLM)
+### Qwen2.5 (vLLM)
 
-- GPT-4o
-Create a `.env` file in the project root and add your key:
+
+### GPT-4o
+
+Create a `.env` file in the project root and add your OpenAI API key:
 
 ```bash
 OPENAI_API_KEY=<your_openai_api_key>
