@@ -22,15 +22,15 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 <!--**Paper2Poster:** A benchmark for paper to poster generation, paired with human generated poster, with a comprehensive evaluation suite, including metrics like **Visual Quality**, **Textual Coherence**, **VLM-as-Judge** and **PaperQuiz**. Notably, PaperQuiz is a novel evaluation which assume A Good poster should convey core paper content visually.-->
 
-## 🗺️ Outline
+## 📋 Table of Contents
 
 <!--- [📚 Introduction](#-introduction)-->
-- [🔧 Environment](#-environment)
-- [🕹️ Run PosterAgent](#-run-posteragent)
+- [🛠️ Installation](#-installation)
+- [🚀 Quick Start](#-quick-start)
 - [🔮 Evaluation](#-evaluation)
 ---
 
-## 🔧 Environment
+## 🛠️ Installation
 Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html)) or API-based access (e.g., GPT-4o).
 
 ```bash
@@ -45,7 +45,7 @@ OPENAI_API_KEY=<your_openai_api_key>
 
 ---
 
-## 🕹️ Run PosterAgent
+## 🚀 Quick Start
 - (Recommended) Generate a poster with `Qwen-2.5-7B-Instruct` and `GPT-4o`:
 
 ```bash
