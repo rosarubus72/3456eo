@@ -103,7 +103,7 @@ python -m Paper2Poster-eval.create_paper_questions \
 ```
 
 ## ❤ Acknowledgement
-We extend our gratitude to [🦉OWL](https://github.com/camel-ai/owl) for providing their codebase.
+We extend our gratitude to [🐫CAMEL](https://github.com/camel-ai/camel), [🦉OWL](https://github.com/camel-ai/owl), [PPTAgent](https://github.com/icip-cas/PPTAgent) for providing their codebases.
 
 ## 📖 Citation
 
