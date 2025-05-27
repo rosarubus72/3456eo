@@ -5,7 +5,7 @@ import subprocess
 from PIL import Image
 import json
 
-def generate_meta_json(base_dir='Paper2Poster'):
+def generate_meta_json(base_dir='Paper2Poster-data'):
     # Loop over each item in the specified base directory
     for folder_name in os.listdir(base_dir):
         subfolder_path = os.path.join(base_dir, folder_name)
@@ -40,18 +40,18 @@ def generate_meta_json(base_dir='Paper2Poster'):
 
 if __name__ == "__main__":
     dataset = load_dataset("Paper2Poster/Paper2Poster", split="train")
-    os.makedirs('Paper2Poster', exist_ok=True)
+    os.makedirs('Paper2Poster-data', exist_ok=True)
     for data in dataset:
         paper_title = data['title']
         paper_url = data['paper_url']
         poster_url = data['image_url']
         qa = data['qa']
 
-        os.makedirs(f'Paper2Poster/{paper_title}', exist_ok=True)
+        os.makedirs(f'Paper2Poster-data/{paper_title}', exist_ok=True)
 
-        paper_output_path = os.path.join('Paper2Poster', paper_title, 'paper.pdf')
-        poster_output_path = os.path.join('Paper2Poster', paper_title, 'poster.png')
-        qa_path = os.path.join('Paper2Poster', paper_title, 'o3_qa.json')
+        paper_output_path = os.path.join('Paper2Poster-data', paper_title, 'paper.pdf')
+        poster_output_path = os.path.join('Paper2Poster-data', paper_title, 'poster.png')
+        qa_path = os.path.join('Paper2Poster-data', paper_title, 'o3_qa.json')
 
         qa_dict = json.loads(qa)
         with open(qa_path, 'w') as f:
@@ -66,4 +66,4 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError as e:
             print(f"Error downloading {paper_url} or {poster_url}: {e}")
 
-    generate_meta_json('Paper2Poster')
+    generate_meta_json('Paper2Poster-data')

@@ -38,6 +38,8 @@ if __name__ == '__main__':
     parser.add_argument('--index', type=int, default=0)
     parser.add_argument('--poster_name', type=str, default=None)
     parser.add_argument('--tmp_dir', type=str, default='tmp')
+    parser.add_argument('--poster_width_inches', type=int, default=None)
+    parser.add_argument('--poster_height_inches', type=int, default=None)
     parser.add_argument('--ablation_no_tree_layout', action='store_true', help='Ablation study: no tree layout')
     parser.add_argument('--ablation_no_commenter', action='store_true', help='Ablation study: no commenter')
     parser.add_argument('--ablation_no_example', action='store_true', help='Ablation study: no example')
@@ -58,15 +60,23 @@ if __name__ == '__main__':
     else:
         poster_name = args.poster_name
     meta_json_path = args.poster_path.replace('paper.pdf', 'meta.json')
-    meta_json = json.load(open(meta_json_path, 'r'))
-    poster_width = meta_json['width']
-    poster_height = meta_json['height']
+    if args.poster_width_inches is not None and args.poster_height_inches is not None:
+        poster_width = args.poster_width_inches * units_per_inch
+        poster_height = args.poster_height_inches * units_per_inch
+    elif os.path.exists(meta_json_path):
+        meta_json = json.load(open(meta_json_path, 'r'))
+        poster_width = meta_json['width']
+        poster_height = meta_json['height']
+    else:
+        poster_width = 48 * units_per_inch
+        poster_height = 36 * units_per_inch
 
     poster_width, poster_height = scale_to_target_area(poster_width, poster_height)
     poster_width_inches = to_inches(poster_width, units_per_inch)
     poster_height_inches = to_inches(poster_height, units_per_inch)
 
     if poster_width_inches > 56 or poster_height_inches > 56:
+        print(f'Poster width or height exceeds 56 inches, scaling down to 48 x 36 inches.')
         poster_width, poster_height = scale_to_target_area(48, 36)
         poster_width_inches = to_inches(poster_width, units_per_inch)
         poster_height_inches = to_inches(poster_height, units_per_inch)

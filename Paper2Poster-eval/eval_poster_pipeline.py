@@ -132,7 +132,7 @@ def run_qa_and_update_results(
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--paper_name', type=str)
-    parser.add_argument('--base_dir', type=str, default='Paper2Poster')
+    parser.add_argument('--base_dir', type=str, default='Paper2Poster-data')
     parser.add_argument('--poster_method', type=str)
     parser.add_argument('--poster_image_name', type=str, default='poster.png', choices=['poster.png'])
     parser.add_argument('--metric', type=str, choices=['stats', 'qa', 'judge', 'word_count', 'token_count', 'figure_count', 'aesthetic_judge'], default='stats')
