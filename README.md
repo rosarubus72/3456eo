@@ -96,8 +96,7 @@ python -m Paper2Poster-eval.eval_poster_pipeline \
     --metric=stats # statistical measures
 ```
 
-### 📦 Create your own Quiz
-To create your own PaperQuiz:
+If you want to create a PaperQuiz for your own paper:
 ```bash
 python -m Paper2Poster-eval.create_paper_questions \
     --paper_folder="Paper2Poster/${paper_name}"
