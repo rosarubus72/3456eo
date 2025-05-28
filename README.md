@@ -1,7 +1,7 @@
 # 🎓Paper2Poster: Multimodal Poster Automation from Scientific Papers
 
 <p align="center">
-  <a href="" target="_blank"><img src="https://img.shields.io/badge/arXiv-xxx-red"></a>
+  <a href="https://arxiv.org/abs/2505.21497" target="_blank"><img src="https://img.shields.io/badge/arXiv-2505.21497-red"></a>
   <a href="https://paper2poster.github.io/" target="_blank"><img src="https://img.shields.io/badge/Project-Page-brightgreen"></a>
   <a href="https://huggingface.co/datasets/Paper2Poster/Paper2Poster" target="_blank"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-orange"></a>
 </p>
