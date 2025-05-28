@@ -38,6 +38,10 @@ Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai
 pip install -r requirements.txt
 ```
 
+```bash
+sudo apt install libreoffice
+```
+
 Create a `.env` file in the project root and add your OpenAI API key:
 
 ```bash
