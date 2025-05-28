@@ -130,7 +130,7 @@ python -m Paper2Poster-eval.eval_poster_pipeline \
 If you want to create a PaperQuiz for your own paper:
 ```bash
 python -m Paper2Poster-eval.create_paper_questions \
-    --paper_folder="Paper2Poster/${paper_name}"
+    --paper_folder="Paper2Poster-data/${paper_name}"
 ```
 
 ## ❤ Acknowledgement
