@@ -141,5 +141,13 @@ We extend our gratitude to [🐫CAMEL](https://github.com/camel-ai/camel), [🦉
 Please kindly cite our paper if you find this project helpful.
 
 ```bibtex
-
+@misc{pang2025paper2postermultimodalposterautomation,
+      title={Paper2Poster: Towards Multimodal Poster Automation from Scientific Papers}, 
+      author={Wei Pang and Kevin Qinghong Lin and Xiangru Jian and Xi He and Philip Torr},
+      year={2025},
+      eprint={2505.21497},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2505.21497}, 
+}
 ```
