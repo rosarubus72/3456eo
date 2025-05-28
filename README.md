@@ -88,7 +88,7 @@ python -m PosterAgent.new_pipeline \
     --poster_height_inches=36
 ```
 
-- [Best Performance] Generate a poster with `GPT-o3`:
+- [Best Performance] Generate a poster with `o3`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
