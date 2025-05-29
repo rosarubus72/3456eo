@@ -6,6 +6,7 @@ import random
 
 from camel.models import ModelFactory
 from camel.agents import ChatAgent
+from tenacity import retry, stop_after_attempt
 from docling_core.types.doc import ImageRefMode, PictureItem, TableItem
 
 from docling.datamodel.base_models import InputFormat
@@ -41,6 +42,7 @@ doc_converter = DocumentConverter(
     }
 )
 
+@retry(stop=stop_after_attempt(3))
 def parse_raw(args, actor_config, version=1):
     raw_source = args.poster_path
     markdown_clean_pattern = re.compile(r"<!--[\s\S]*?-->")
@@ -103,6 +105,13 @@ def parse_raw(args, actor_config, version=1):
         # First 2 sections + randomly select 5 sections + last 2 sections
         selected_sections = content_json['sections'][:2] + random.sample(content_json['sections'][2:-2], 5) + content_json['sections'][-2:]
         content_json['sections'] = selected_sections
+
+
+    for res in content_json['sections']:
+        if type(res) != dict or not 'title' in res or not 'content' in res:
+            print(f"Ouch! The response is invalid, the LLM is not following the format :(")
+            print('Trying again...')
+            raise
 
     os.makedirs('contents', exist_ok=True)
     json.dump(content_json, open(f'contents/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_raw_content.json', 'w'), indent=4)
