@@ -76,10 +76,18 @@ if __name__ == '__main__':
     poster_height_inches = to_inches(poster_height, units_per_inch)
 
     if poster_width_inches > 56 or poster_height_inches > 56:
-        print(f'Poster width or height exceeds 56 inches, scaling down to 48 x 36 inches.')
-        poster_width, poster_height = scale_to_target_area(48, 36)
-        poster_width_inches = to_inches(poster_width, units_per_inch)
-        poster_height_inches = to_inches(poster_height, units_per_inch)
+        # Work out which side is longer, then compute a single scale factor
+        if poster_width_inches >= poster_height_inches:
+            scale_factor = 56 / poster_width_inches
+        else:
+            scale_factor = 56 / poster_height_inches
+
+        poster_width_inches  *= scale_factor
+        poster_height_inches *= scale_factor
+
+        # convert back to internal units
+        poster_width  = poster_width_inches  * units_per_inch
+        poster_height = poster_height_inches * units_per_inch
 
     print(f'Poster size: {poster_width_inches} x {poster_height_inches} inches')
 
