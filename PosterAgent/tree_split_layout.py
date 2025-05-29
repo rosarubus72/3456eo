@@ -589,8 +589,12 @@ def split_textbox(textbox, ratio):
 
 def generate_constrained_layout(paper_panels, poster_w, poster_h, title_height_ratio=0.1):
     # Find title panel explicitly
-    title_panel = next(p for p in paper_panels if ('title' in p["section_name"].lower()))
-    other_panels = [p for p in paper_panels if ('title' not in p["section_name"].lower())]
+    try:
+        title_panel = next(p for p in paper_panels if ('title' in p["section_name"].lower()))
+        other_panels = [p for p in paper_panels if ('title' not in p["section_name"].lower())]
+    except StopIteration:
+        print('Oops, no title found, please try again.')
+        raise
 
     title_h = poster_h * title_height_ratio
     title_layout = {

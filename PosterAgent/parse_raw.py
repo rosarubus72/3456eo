@@ -42,7 +42,7 @@ doc_converter = DocumentConverter(
     }
 )
 
-@retry(stop=stop_after_attempt(3))
+@retry(stop=stop_after_attempt(5))
 def parse_raw(args, actor_config, version=1):
     raw_source = args.poster_path
     markdown_clean_pattern = re.compile(r"<!--[\s\S]*?-->")
@@ -106,12 +106,19 @@ def parse_raw(args, actor_config, version=1):
         selected_sections = content_json['sections'][:2] + random.sample(content_json['sections'][2:-2], 5) + content_json['sections'][-2:]
         content_json['sections'] = selected_sections
 
+    has_title = False
 
-    for res in content_json['sections']:
-        if type(res) != dict or not 'title' in res or not 'content' in res:
+    for section in content_json['sections']:
+        if type(section) != dict or not 'title' in section or not 'content' in section:
             print(f"Ouch! The response is invalid, the LLM is not following the format :(")
             print('Trying again...')
             raise
+        if 'title' in section['title'].lower():
+            has_title = True
+
+    if not has_title:
+        print('Ouch! The response is invalid, the LLM is not following the format :(')
+        raise
 
     os.makedirs('contents', exist_ok=True)
     json.dump(content_json, open(f'contents/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_raw_content.json', 'w'), indent=4)
