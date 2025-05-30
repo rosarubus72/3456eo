@@ -60,7 +60,7 @@ Create a folder named `{paper_name}` under `{dataset_dir}`, and place your paper
 ```
 To use open-source models, you need to first deploy them using [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html), ensuring the port is correctly specified in the `get_agent_config()` function in [`utils/wei_utils.py`](utils/wei_utils.py).
 
-- [Quick Start] Generate a poster with `GPT-4o`:
+- [High Performance] Generate a poster with `GPT-4o`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
@@ -71,7 +71,7 @@ python -m PosterAgent.new_pipeline \
     --poster_height_inches=36
 ```
 
-- [Recommended] Generate a poster with `Qwen-2.5-7B-Instruct` and `GPT-4o`:
+- [Economic] Generate a poster with `Qwen-2.5-7B-Instruct` and `GPT-4o`:
 
 ```bash
 python -m PosterAgent.new_pipeline \
