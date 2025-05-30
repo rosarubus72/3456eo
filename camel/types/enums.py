@@ -32,6 +32,8 @@ class ModelType(UnifiedModelType, Enum):
     GPT_3_5_TURBO = "gpt-3.5-turbo"
     GPT_4 = "gpt-4"
     GPT_4_TURBO = "gpt-4-turbo"
+    GPT_4_1 = 'gpt-4.1'
+    GPT_4_1_MINI = 'gpt-4.1-mini'
     GPT_4O = "gpt-4o"
     GPT_4O_LATEST = 'chatgpt-4o-latest'
     GPT_4O_MINI = "gpt-4o-mini"
@@ -224,6 +226,8 @@ class ModelType(UnifiedModelType, Enum):
         return self in {
             ModelType.GPT_3_5_TURBO,
             ModelType.GPT_4,
+            ModelType.GPT_4_1,
+            ModelType.GPT_4_1_MINI,
             ModelType.GPT_4_TURBO,
             ModelType.GPT_4O,
             ModelType.GPT_4O_LATEST,
@@ -631,6 +635,11 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.DEEPINFRA_GEMINI_2_FLASH
         }:
             return 990_000
+        elif self in {
+            ModelType.GPT_4_1,
+            ModelType.GPT_4_1_MINI
+        }:
+            return 1_047_576
         elif self in {
             ModelType.GEMINI_1_5_FLASH,
             ModelType.GEMINI_1_5_PRO,

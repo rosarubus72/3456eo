@@ -104,6 +104,18 @@ def get_agent_config(model_type):
             "model_config": ChatGPTConfig().as_dict(),
             "model_platform": ModelPlatformType.OPENAI,
         }
+    elif model_type == 'gpt-4.1':
+        agent_config = {
+            "model_type": ModelType.GPT_4_1,
+            "model_config": ChatGPTConfig().as_dict(),
+            "model_platform": ModelPlatformType.OPENAI,
+        }
+    elif model_type == 'gpt-4.1-mini':
+        agent_config = {
+            "model_type": ModelType.GPT_4_1_MINI,
+            "model_config": ChatGPTConfig().as_dict(),
+            "model_platform": ModelPlatformType.OPENAI,
+        }
     elif model_type == '4o':
         agent_config = {
             "model_type": ModelType.GPT_4O,

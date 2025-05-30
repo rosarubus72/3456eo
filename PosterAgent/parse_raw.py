@@ -181,7 +181,7 @@ def gen_image_and_table(args, conv_res):
         if len(caption) > 0:
             table_img_path = f'<{args.model_name_t}_{args.model_name_v}>_images_and_tables/{args.poster_name}/{args.poster_name}-table-{table_index}.png'
             table_img = PIL.Image.open(table_img_path)
-            tables[table_index] = {
+            tables[str(table_index)] = {
                 'caption': caption,
                 'table_path': table_img_path,
                 'width': table_img.width,
@@ -199,7 +199,7 @@ def gen_image_and_table(args, conv_res):
         if len(caption) > 0:
             image_img_path = f'<{args.model_name_t}_{args.model_name_v}>_images_and_tables/{args.poster_name}/{args.poster_name}-picture-{image_index}.png'
             image_img = PIL.Image.open(image_img_path)
-            images[image_index] = {
+            images[str(image_index)] = {
                 'caption': caption,
                 'image_path': image_img_path,
                 'width': image_img.width,

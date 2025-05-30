@@ -338,7 +338,6 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
                 input_token, output_token = account_token(response)
                 total_input_token_v += input_token
                 total_output_token_v += output_token
-                # if response.msgs[0].content.lower() in ['yes', 'yes.', '"yes"', "'yes'"]:
                 if response.msgs[0].content.lower() in ['1', '1.', '"1"', "'1'"]:
                     if curr_round > 10:
                         print('Too many rounds of modification, breaking...')
