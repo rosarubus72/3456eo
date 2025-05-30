@@ -93,17 +93,6 @@ python -m PosterAgent.new_pipeline \
     --poster_height_inches=36
 ```
 
-- [Best Performance] Generate a poster with `o3`:
-
-```bash
-python -m PosterAgent.new_pipeline \
-    --poster_path="${dataset_dir}/${paper_name}/paper.pdf" \
-    --model_name_t="o3" \ # LLM
-    --model_name_v="o3" \ # VLM
-    --poster_width_inches=48 \
-    --poster_height_inches=36
-```
-
 PosterAgent **supports flexible combination of LLM / VLM**, feel free to try other options, or customize your own settings in `get_agent_config()` in [`utils/wei_utils.py`](utils/wei_utils.py).
 
 ## 🔮 Evaluation
