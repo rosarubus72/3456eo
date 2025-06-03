@@ -35,17 +35,19 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 ## 🛠️ Installation
 Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html)) or API-based access (e.g., GPT-4o).
 
+**Python Environment**
 ```bash
 pip install -r requirements.txt
 ```
 
+**Install Libreoffice**
 ```bash
 sudo apt install libreoffice
 ```
 
-or, if you do **not** have sudo access, download `soffice` executable directly: https://www.libreoffice.org/download/download-libreoffice/, 
+or, if you do **not** have sudo access, download `soffice` executable directly: https://www.libreoffice.org/download/download-libreoffice/, and add the executable directory to your `$PATH`.
 
-and add the executable directory to your `$PATH`.
+**API Key**
 
 Create a `.env` file in the project root and add your OpenAI API key:
 
