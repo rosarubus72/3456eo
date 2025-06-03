@@ -43,6 +43,8 @@ pip install -r requirements.txt
 sudo apt install libreoffice
 ```
 
+or, if you do not have sudo access, download `soffice` executable: `https://www.libreoffice.org/download/download-libreoffice/` directly.
+
 Create a `.env` file in the project root and add your OpenAI API key:
 
 ```bash
