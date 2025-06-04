@@ -558,6 +558,13 @@ save_presentation(poster, file_name="poster_{tmp_name}.pptx")
             prompt = error
     return log
 
+def compute_bullet_length(textbox_content):
+    total = 0
+    for bullet in textbox_content:
+        for run in bullet['runs']:
+            total += len(run['text'])
+    return total
+
 def check_bounding_boxes(bboxes, overall_width, overall_height):
     """
     Given a dictionary 'bboxes' whose keys are bounding-box names and whose values are
@@ -984,6 +991,49 @@ def scale_to_target_area(width, height, target_width=900, target_height=1200):
     
     # Optional: Round the dimensions to integers.
     return int(round(new_width)), int(round(new_height))
+
+def char_capacity(
+    bbox,
+    font_size_px=40 * (96 / 72),  # Default font size in px (40pt converted to px)
+    *,
+    # Average glyph width as fraction of font-size (≈0.6 for monospace,
+    # ≈0.52–0.55 for most proportional sans-serif faces)
+    avg_width_ratio: float = 0.54,
+    line_height_ratio: float = 1,
+    # Optional inner padding in px that the renderer might reserve
+    padding_px: int = 0,
+) -> int:
+    """
+    Estimate the number of characters that will fit into a rectangular text box.
+
+    Parameters
+    ----------
+    bbox : (x, y, height, width)  # all in pixels
+    font_size_px : int           # font size in px
+    avg_width_ratio : float      # average char width ÷ fontSize
+    line_height_ratio : float    # line height ÷ fontSize
+    padding_px : int             # optional inner padding on each side
+
+    Returns
+    -------
+    int : estimated character capacity
+    """
+    CHAR_CONST = 10
+    _, _, height_px, width_px = bbox
+
+    usable_w = max(0, width_px - 2 * padding_px)
+    usable_h = max(0, height_px - 2 * padding_px)
+
+    if usable_w == 0 or usable_h == 0:
+        return 0  # box is too small
+
+    avg_char_w = font_size_px * avg_width_ratio
+    line_height = font_size_px * line_height_ratio
+
+    chars_per_line = max(1, math.floor(usable_w / avg_char_w))
+    lines = max(1, math.floor(usable_h / line_height))
+
+    return chars_per_line * lines * CHAR_CONST
 
 def estimate_characters(width_in_inches, height_in_inches, font_size_points, line_spacing_points=None):
     """

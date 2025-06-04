@@ -294,6 +294,15 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
             'section_title': raw_content['sections'][i]['title'],
         }
 
+        total_expected_length = 0
+        target_textboxes = []
+        for text_arrangement in text_arrangement_list:
+            if text_arrangement['panel_id'] == i:
+                target_textboxes.append(text_arrangement)
+        target_textboxes.pop(0) # Remove the first one, which is the section title
+        for text_arrangement in target_textboxes:
+            total_expected_length += text_arrangement['num_chars']
+
         prompt = template.render(**jinja_args)
         
         # Step the actor_agent and track tokens
@@ -304,6 +313,38 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
         total_output_token_t += output_token
 
         result_json = get_json_from_response(response.msgs[0].content)
+
+        max_attempts = 5
+        num_attempts = 0
+        old_result_json = copy.deepcopy(result_json)
+        while True:
+            num_attempts += 1
+            if num_attempts > max_attempts:
+                print('Too many attempts, breaking...')
+                result_json = old_result_json
+                break
+
+            total_bullet_length = 0
+            try:
+                for j in range(num_textboxes):
+                    bullet_content_key = f'textbox{j + 1}'
+                    total_bullet_length += compute_bullet_length(result_json[bullet_content_key])
+            except:
+                result_json = old_result_json
+                break
+            if total_bullet_length > total_expected_length:
+                percentage_to_shrink = int((total_bullet_length - total_expected_length) / total_bullet_length * 100)
+                percentage_to_shrink = min(90, percentage_to_shrink + 10) # Be a bit aggressive
+                print('Ajdusting length ...')
+                old_result_json = copy.deepcopy(result_json)
+                response = actor_agent.step('Too long, please shorten the bullet points by ' + str(percentage_to_shrink) + '%.')
+                input_token, output_token = account_token(response)
+                total_input_token_t += input_token
+                total_output_token_t += output_token
+
+                result_json = get_json_from_response(response.msgs[0].content)
+            else:
+                break
 
         critic_prompt = critic_template.render()
         # Visualize each component, but skip section title
@@ -354,6 +395,9 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Fal
                         result_json[bullet_content] = result_json[bullet_content][:-1]
                     continue
                 elif response.msgs[0].content.lower() in ['2', '2.', '"2"', "'2'"]:
+                    if args.no_blank_detection:
+                        print('No blank space detection, skipping...')
+                        break
                     if curr_round > 10:
                         print('Too many rounds of modification, breaking...')
                         break

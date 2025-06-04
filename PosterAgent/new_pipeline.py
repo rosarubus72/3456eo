@@ -1,6 +1,6 @@
 from PosterAgent.parse_raw import parse_raw, gen_image_and_table
 from PosterAgent.gen_outline_layout import filter_image_table, gen_outline_layout_v2
-from utils.wei_utils import get_agent_config, utils_functions, run_code, style_bullet_content, scale_to_target_area
+from utils.wei_utils import get_agent_config, utils_functions, run_code, style_bullet_content, scale_to_target_area, char_capacity
 from PosterAgent.tree_split_layout import main_train, main_inference, get_arrangments_in_inches, split_textbox, to_inches
 from PosterAgent.gen_pptx_code import generate_poster_code
 from utils.src.utils import ppt_to_images
@@ -40,6 +40,7 @@ if __name__ == '__main__':
     parser.add_argument('--tmp_dir', type=str, default='tmp')
     parser.add_argument('--poster_width_inches', type=int, default=None)
     parser.add_argument('--poster_height_inches', type=int, default=None)
+    parser.add_argument('--no_blank_detection', action='store_true', help='When overflow is severe, try this option.')
     parser.add_argument('--ablation_no_tree_layout', action='store_true', help='Ablation study: no tree layout')
     parser.add_argument('--ablation_no_commenter', action='store_true', help='Ablation study: no commenter')
     parser.add_argument('--ablation_no_example', action='store_true', help='Ablation study: no example')
@@ -181,6 +182,12 @@ if __name__ == '__main__':
         
         figure_arrangement[i]['figure_path'] = figure_path
         
+    for text_arrangement_item in text_arrangement:
+        num_chars = char_capacity(
+            bbox=(text_arrangement_item['x'], text_arrangement_item['y'], text_arrangement_item['height'], text_arrangement_item['width'])
+        )
+        text_arrangement_item['num_chars'] = num_chars
+
 
     width_inch, height_inch, panel_arrangement_inches, figure_arrangement_inches, text_arrangement_inches = get_arrangments_in_inches(
         poster_width, poster_height, panel_arrangement, figure_arrangement, text_arrangement, 25
