@@ -47,6 +47,11 @@ sudo apt install libreoffice
 
 or, if you do **not** have sudo access, download `soffice` executable directly: https://www.libreoffice.org/download/download-libreoffice/, and add the executable directory to your `$PATH`.
 
+**Install poppler**
+```bash
+conda install -c conda-forge poppler
+```
+
 **API Key**
 
 Create a `.env` file in the project root and add your OpenAI API key:
