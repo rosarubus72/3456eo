@@ -168,6 +168,12 @@ def get_agent_config(model_type):
             'model_platform': ModelPlatformType.OPENROUTER,
             'model_config': OpenRouterConfig().as_dict(),
         }
+    else:
+        agent_config = {
+            'model_type': model_type,
+            'model_platform': ModelPlatformType.OPENAI_COMPATIBLE_MODEL,
+            'model_config': None
+        }
     
     return agent_config
 
