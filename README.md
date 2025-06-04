@@ -90,7 +90,8 @@ python -m PosterAgent.new_pipeline \
     --model_name_t="vllm_qwen" \  # LLM
     --model_name_v="4o" \         # VLM
     --poster_width_inches=48 \
-    --poster_height_inches=36
+    --poster_height_inches=36 \
+    --no_blank_detection          # An option to disable blank detection
 ```
 
 - [Local] Generate a poster with `Qwen-2.5-7B-Instruct`:
