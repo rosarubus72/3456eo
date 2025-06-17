@@ -47,8 +47,9 @@ class ModelType(UnifiedModelType, Enum):
     GLM_4V = 'glm-4v'
     GLM_3_TURBO = "glm-3-turbo"
 
-    OPENROUTER_QWEN_2_5_VL_72B = 'qwen/qwen2.5-vl-72b-instruct'
-    OPENROUTER_QWEN_2_5_VL_7B = 'qwen/qwen2.5-vl-7b-instruct'
+    OPENROUTER_QWEN_2_5_VL_72B = 'qwen/qwen-2.5-vl-72b-instruct'
+    OPENROUTER_QWEN_2_5_VL_7B = 'qwen/qwen-2.5-vl-7b-instruct'
+    OPENROUTER_QWEN_2_5_7B = 'qwen/qwen-2.5-7b-instruct'
 
     # Groq platform models
     GROQ_LLAMA_3_1_8B = "llama-3.1-8b-instant"
@@ -245,6 +246,7 @@ class ModelType(UnifiedModelType, Enum):
         return self in {
             ModelType.OPENROUTER_QWEN_2_5_VL_72B,
             ModelType.OPENROUTER_QWEN_2_5_VL_7B,
+            ModelType.OPENROUTER_QWEN_2_5_7B,
             ModelType.QWEN_2_VL_7B,
         }
 
@@ -544,7 +546,9 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.INTERNLM2_PRO_CHAT,
             ModelType.TOGETHER_MIXTRAL_8_7B,
             ModelType.SGLANG_MISTRAL_7B,
-            ModelType.QWEN_2_VL_7B
+            ModelType.QWEN_2_VL_7B,
+            ModelType.OPENROUTER_QWEN_2_5_VL_7B,
+            ModelType.OPENROUTER_QWEN_2_5_7B,
         }:
             return 32_768
         elif self in {

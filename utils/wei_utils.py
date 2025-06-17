@@ -168,6 +168,12 @@ def get_agent_config(model_type):
             'model_platform': ModelPlatformType.OPENROUTER,
             'model_config': OpenRouterConfig().as_dict(),
         }
+    elif model_type == 'openrouter_qwen_7b':
+        agent_config = {
+            'model_type': ModelType.OPENROUTER_QWEN_2_5_7B,
+            'model_platform': ModelPlatformType.OPENROUTER,
+            'model_config': OpenRouterConfig().as_dict(),
+        }
     else:
         agent_config = {
             'model_type': model_type,
