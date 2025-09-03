@@ -156,6 +156,12 @@ def get_agent_config(model_type):
             "model_config": VLLMConfig().as_dict(),
             "url": 'http://localhost:8000/v1',
         }
+    elif model_type == 'openrouter_qwen_72b':
+        agent_config = {
+            'model_type': ModelType.OPENROUTER_QWEN_2_5_72B,
+            'model_platform': ModelPlatformType.OPENROUTER,
+            'model_config': OpenRouterConfig().as_dict(),
+        }
     elif model_type == 'openrouter_qwen_vl_72b':
         agent_config = {
             'model_type': ModelType.OPENROUTER_QWEN_2_5_VL_72B,

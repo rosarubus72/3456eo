@@ -38,6 +38,8 @@ if __name__ == '__main__':
     parser.add_argument('--index', type=int, default=0)
     parser.add_argument('--poster_name', type=str, default=None)
     parser.add_argument('--tmp_dir', type=str, default='tmp')
+    parser.add_argument('--estimate_chars', action='store_true')
+    parser.add_argument('--max_workers', type=int, default=10)
     parser.add_argument('--poster_width_inches', type=int, default=None)
     parser.add_argument('--poster_height_inches', type=int, default=None)
     parser.add_argument('--no_blank_detection', action='store_true', help='When overflow is severe, try this option.')
@@ -104,6 +106,12 @@ if __name__ == '__main__':
 
     print(f'Parsing token consumption: {input_token} -> {output_token}')
 
+    parser_time_taken = time.time() - start_time
+    print(f'Parser time: {parser_time_taken:.2f} seconds')
+    detail_log['parser_time'] = parser_time_taken
+
+    parser_time = time.time()
+
     detail_log['parser_in_t'] = input_token
     detail_log['parser_out_t'] = output_token
 
@@ -114,6 +122,12 @@ if __name__ == '__main__':
     total_output_tokens_t += output_token
     print(f'Filter figures token consumption: {input_token} -> {output_token}')
 
+    filter_time_taken = time.time() - parser_time
+    print(f'Filter time: {filter_time_taken:.2f} seconds')
+    detail_log['filter_time'] = filter_time_taken
+
+    filter_time = time.time()
+
     detail_log['filter_in_t'] = input_token
     detail_log['filter_out_t'] = output_token
 
@@ -122,6 +136,12 @@ if __name__ == '__main__':
     total_input_tokens_t += input_token
     total_output_tokens_t += output_token
     print(f'Outline token consumption: {input_token} -> {output_token}')
+
+    outline_time_taken = time.time() - filter_time
+    print(f'Outline time: {outline_time_taken:.2f} seconds')
+    detail_log['outline_time'] = outline_time_taken
+
+    outline_time = time.time()
 
     detail_log['outline_in_t'] = input_token
     detail_log['outline_out_t'] = output_token
@@ -211,6 +231,12 @@ if __name__ == '__main__':
     with open(f'tree_splits/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_tree_split_{args.index}.json', 'w') as f:
         json.dump(tree_split_results, f, indent=4)
 
+    layout_time_taken = time.time() - outline_time
+    print(f'Layout time: {layout_time_taken:.2f} seconds')
+    detail_log['layout_time'] = layout_time_taken
+
+    layout_time = time.time()
+
     # Step 5: Generate content
     input_token_t, output_token_t, input_token_v, output_token_v = gen_bullet_point_content(args, agent_config_t, agent_config_v, tmp_dir=args.tmp_dir)
     total_input_tokens_t += input_token
@@ -219,6 +245,12 @@ if __name__ == '__main__':
     total_output_tokens_v += output_token_v
     print(f'Content generation token consumption T: {input_token_t} -> {output_token_t}')
     print(f'Content generation token consumption V: {input_token_v} -> {output_token_v}')
+
+    content_time_taken = time.time() - layout_time
+    print(f'Content generation time: {content_time_taken:.2f} seconds')
+    detail_log['content_time'] = content_time_taken
+
+    content_time = time.time()
 
     bullet_content = json.load(open(f'contents/<{args.model_name_t}_{args.model_name_v}>_{args.poster_name}_bullet_point_content_{args.index}.json', 'r'))
 
@@ -271,6 +303,10 @@ if __name__ == '__main__':
 
     end_time = time.time()
     time_taken = end_time - start_time
+
+    render_time_taken = time.time() - content_time
+    print(f'Render time: {render_time_taken:.2f} seconds')
+    detail_log['render_time'] = render_time_taken
 
     # log
     log_file = os.path.join(output_dir, 'log.json')

@@ -17,7 +17,7 @@ from pptx.shapes.group import GroupShape
 from pptx.text.text import _Paragraph, _Run
 from pptx.util import Length, Pt
 from rich import print
-from tenacity import RetryCallState, retry, stop_after_attempt, wait_fixed
+from tenacity import RetryCallState, retry, stop_after_attempt, wait_fixed, wait_random
 
 IMAGE_EXTENSIONS = {"bmp", "jpg", "jpeg", "pgm", "png", "ppm", "tif", "tiff", "webp"}
 
@@ -132,7 +132,7 @@ def get_json_from_response(raw_response: str):
 
 
 tenacity = retry(
-    wait=wait_fixed(3), stop=stop_after_attempt(5), after=tenacity_log, reraise=True
+    wait=wait_random(3), stop=stop_after_attempt(5), after=tenacity_log, reraise=True
 )
 
 

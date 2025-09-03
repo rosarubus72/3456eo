@@ -48,6 +48,7 @@ class ModelType(UnifiedModelType, Enum):
     GLM_3_TURBO = "glm-3-turbo"
 
     OPENROUTER_QWEN_2_5_VL_72B = 'qwen/qwen-2.5-vl-72b-instruct'
+    OPENROUTER_QWEN_2_5_72B = 'qwen/qwen-2.5-72b-instruct'
     OPENROUTER_QWEN_2_5_VL_7B = 'qwen/qwen-2.5-vl-7b-instruct'
     OPENROUTER_QWEN_2_5_7B = 'qwen/qwen-2.5-7b-instruct'
 
@@ -245,6 +246,7 @@ class ModelType(UnifiedModelType, Enum):
         r"""Returns whether this type of models is served by OpenRouter."""
         return self in {
             ModelType.OPENROUTER_QWEN_2_5_VL_72B,
+            ModelType.OPENROUTER_QWEN_2_5_72B,
             ModelType.OPENROUTER_QWEN_2_5_VL_7B,
             ModelType.OPENROUTER_QWEN_2_5_7B,
             ModelType.QWEN_2_VL_7B,
@@ -599,6 +601,7 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.SGLANG_LLAMA_3_2_1B,
             ModelType.SGLANG_MIXTRAL_NEMO,
             ModelType.OPENROUTER_QWEN_2_5_VL_72B,
+            ModelType.OPENROUTER_QWEN_2_5_72B,
             ModelType.QWEN_2_5_VL_72B,
             ModelType.DEEPINFRA_PHI_4_MULTIMODAL
         }:

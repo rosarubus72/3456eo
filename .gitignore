@@ -10,3 +10,7 @@ tmp/
 tree_splits/
 eval_results/
 Paper2Poster-data/
+Example/
+*.ipynb
+eval_time_detail_parallel/
+*.sh

@@ -462,14 +462,14 @@ def compute_fid(reference_poster_folder, generated_poster_img_folder, clip=False
     return fid_score
 
 
-def get_poster_text(poster_path):
+def get_poster_text(poster_path, check_fail=True):
     markdown_clean_pattern = re.compile(r"<!--[\s\S]*?-->")
     converter = DocumentConverter()
     raw_result = converter.convert(poster_path)
 
     raw_markdown = raw_result.document.export_to_markdown()
     text_content = markdown_clean_pattern.sub("", raw_markdown)
-    if len(text_content) < 500:
+    if len(text_content) < 500 and check_fail:
         print('\nParsing with docling failed, using marker instead\n')
         parser_model = create_model_dict(device='cuda', dtype=torch.float16)
         text_content, rendered = parse_pdf(poster_path, model_lst=parser_model, save_file=False)
