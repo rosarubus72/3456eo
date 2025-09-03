@@ -32,6 +32,11 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 - [🔮 Evaluation](#-evaluation)
 ---
 
+## Updates
+Parallelization is now supported! Simply specify as hyper parameter `--max_workers`.
+
+E.g. `--max_workers=5`
+
 ## 🛠️ Installation
 Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html)) or API-based access (e.g., GPT-4o).
 
