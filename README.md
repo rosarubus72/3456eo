@@ -14,7 +14,7 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 
 ## 🔥 Update
-- [x] [2025.9.18] Paper2Poster has been accepted to **CVPR 2025**.
+- [x] [2025.9.18] Paper2Poster has been accepted to **NeurIPS 2025 Dataset and Benchmark Track**.
 - [x] [2025.5.27] We release the [arXiv paper](https://arxiv.org/abs/2505.21497), [code](https://github.com/Paper2Poster/Paper2Poster) and [`dataset`](https://huggingface.co/datasets/Paper2Poster/Paper2Poster)
 
 <!--## 📚 Introduction-->
