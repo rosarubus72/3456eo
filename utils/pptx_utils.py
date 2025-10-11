@@ -215,7 +215,7 @@ utils_functions = r'''
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
-from pptx.enum.text import PP_ALIGN
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
 from pptx.dml.color import RGBColor
 from pptx.enum.dml import MSO_LINE_DASH_STYLE
@@ -755,10 +755,10 @@ def style_shape_border(shape, color=(30, 144, 255), thickness=2, line_style="squ
     dash_style_enum = dash_style_map.get(line_style.lower(), MSO_LINE_DASH_STYLE.SOLID)
     line.dash_style = dash_style_enum
 
-def fill_textframe(shape, paragraphs_spec):
+def fill_textframe(shape, paragraphs_spec, vertical_anchor=None):
     """
     Given an existing shape (with a text frame) and a paragraphs_spec
-    describing paragraphs and runs, populate the shape’s text frame.
+    describing paragraphs and runs, populate the shape's text frame.
 
     'paragraphs_spec' is a list of paragraphs, each containing:
       - bullet: bool
@@ -772,11 +772,27 @@ def fill_textframe(shape, paragraphs_spec):
           color: [r,g,b] or None
           font_size: int (optional, overrides paragraph default)
           fill_color: [r,g,b] or None
+
+    :param vertical_anchor: Optional MSO_ANCHOR constant or string ("top", "middle", "bottom")
+                           to control vertical alignment of text within textbox
     """
     text_frame = shape.text_frame
     # Ensure stable layout
     text_frame.auto_size = MSO_AUTO_SIZE.NONE
     text_frame.word_wrap = True
+
+    # Set vertical anchor if provided
+    if vertical_anchor is not None:
+        if isinstance(vertical_anchor, str):
+            anchor_map = {
+                "top": MSO_ANCHOR.TOP,
+                "middle": MSO_ANCHOR.MIDDLE,
+                "bottom": MSO_ANCHOR.BOTTOM,
+            }
+            text_frame.vertical_anchor = anchor_map.get(vertical_anchor.lower(), MSO_ANCHOR.TOP)
+        else:
+            text_frame.vertical_anchor = vertical_anchor
+
     # Clear out existing paragraphs
     text_frame.clear()
 
@@ -1356,10 +1372,10 @@ def add_textbox(
     
     return shape
 
-def fill_textframe(shape, paragraphs_spec):
+def fill_textframe(shape, paragraphs_spec, vertical_anchor=None):
     """
     Given an existing shape (with a text frame) and a paragraphs_spec
-    describing paragraphs and runs, populate the shape’s text frame.
+    describing paragraphs and runs, populate the shape's text frame.
 
     'paragraphs_spec' is a list of paragraphs, each containing:
       - bullet: bool
@@ -1373,11 +1389,27 @@ def fill_textframe(shape, paragraphs_spec):
           color: [r,g,b] or None
           font_size: int (optional, overrides paragraph default)
           fill_color: [r,g,b] or None
+
+    :param vertical_anchor: Optional MSO_ANCHOR constant or string ("top", "middle", "bottom")
+                           to control vertical alignment of text within textbox
     """
     text_frame = shape.text_frame
     # Ensure stable layout
     text_frame.auto_size = MSO_AUTO_SIZE.NONE
     text_frame.word_wrap = True
+
+    # Set vertical anchor if provided
+    if vertical_anchor is not None:
+        if isinstance(vertical_anchor, str):
+            anchor_map = {
+                "top": MSO_ANCHOR.TOP,
+                "middle": MSO_ANCHOR.MIDDLE,
+                "bottom": MSO_ANCHOR.BOTTOM,
+            }
+            text_frame.vertical_anchor = anchor_map.get(vertical_anchor.lower(), MSO_ANCHOR.TOP)
+        else:
+            text_frame.vertical_anchor = vertical_anchor
+
     # Clear out existing paragraphs
     text_frame.clear()
 

@@ -65,13 +65,14 @@ style_shape_border({var_name}, color={theme['color']}, thickness={theme['thickne
     return code
 
 def generate_textbox_code(
-    text_dict, 
-    utils_functions, 
-    slide_object_name, 
-    visible=False, 
-    content=None, 
+    text_dict,
+    utils_functions,
+    slide_object_name,
+    visible=False,
+    content=None,
     theme=None,
     tmp_dir='tmp',
+    is_title=False,
 ):
     code = utils_functions
     raw_name = text_dict["textbox_name"]
@@ -80,13 +81,13 @@ def generate_textbox_code(
     code += fr'''
 # Textbox: {raw_name}
 {var_name} = add_textbox(
-    {slide_object_name}, 
-    '{var_name}', 
-    {text_dict['x']}, 
-    {text_dict['y']}, 
-    {text_dict['width']}, 
-    {text_dict['height']}, 
-    text="", 
+    {slide_object_name},
+    '{var_name}',
+    {text_dict['x']},
+    {text_dict['y']},
+    {text_dict['width']},
+    {text_dict['height']},
+    text="",
     word_wrap=True,
     font_size=40,
     bold=False,
@@ -97,7 +98,12 @@ def generate_textbox_code(
 )
 '''
     if visible:
-        if theme is None:
+        # Extract textbox_theme from full theme if needed
+        textbox_border_theme = None
+        if theme is not None and isinstance(theme, dict):
+            textbox_border_theme = theme.get('textbox_theme')
+
+        if textbox_border_theme is None:
             code += fr'''
 # Make border visible
 style_shape_border({var_name}, color=(255, 0, 0), thickness=5, line_style="solid")
@@ -105,16 +111,27 @@ style_shape_border({var_name}, color=(255, 0, 0), thickness=5, line_style="solid
         else:
             code += fr'''
 # Make border visible
-style_shape_border({var_name}, color={theme['color']}, thickness={theme['thickness']}, line_style="{theme['line_style']}")
+style_shape_border({var_name}, color={textbox_border_theme['color']}, thickness={textbox_border_theme['thickness']}, line_style="{textbox_border_theme['line_style']}")
 '''
 
     if content is not None:
         tmp_name = f'{tmp_dir}/{var_name}_content.json'
         json.dump(content, open(tmp_name, 'w'), indent=4)
-        code += fr'''
+
+        # Determine vertical alignment
+        vertical_anchor = None
+        if is_title and theme is not None and 'section_title_vertical_align' in theme:
+            vertical_anchor = theme['section_title_vertical_align']
+
+        if vertical_anchor:
+            code += fr'''
+fill_textframe({var_name}, json.load(open('{tmp_name}', 'r')), vertical_anchor="{vertical_anchor}")
+'''
+        else:
+            code += fr'''
 fill_textframe({var_name}, json.load(open('{tmp_name}', 'r')))
 '''
-    
+
     return code
 
 def generate_figure_code(figure_dict, utils_functions, slide_object_name, img_path, visible=False, theme=None):
@@ -188,28 +205,38 @@ def generate_poster_code(
 
     if check_overflow:
         t = text_arrangement_list[0]
-        code += generate_textbox_code(t, '', slide_object_name, textbox_visible, content, textbox_theme, tmp_dir)
+        # Pass full theme for consistency
+        code += generate_textbox_code(t, '', slide_object_name, textbox_visible, content, theme, tmp_dir, is_title=False)
     else:
         all_content = []
+        title_indices = set()  # Track which indices are section titles
         if content is not None:
+            idx = 0
             for section_content in content:
                 if 'title' in section_content:
                     all_content.append(section_content['title'])
+                    title_indices.add(idx)  # Mark this index as a title
+                    idx += 1
                 if len(section_content) == 2:
                     all_content.append(section_content['textbox1'])
+                    idx += 1
                 elif len(section_content) == 3:
                     all_content.append(section_content['textbox1'])
                     all_content.append(section_content['textbox2'])
+                    idx += 2
                 else:
                     raise ValueError(f"Unexpected content length: {len(section_content)}")
-    
+
         for i in range(len(text_arrangement_list)):
             t = text_arrangement_list[i]
-            if content is not None: # Skip title section
+            if content is not None:
                 textbox_content = all_content[i]
+                is_title = i in title_indices
             else:
                 textbox_content = None
-            code += generate_textbox_code(t, '', slide_object_name, textbox_visible, textbox_content, textbox_theme, tmp_dir)
+                is_title = False
+            # Pass full theme (not textbox_theme) so vertical alignment config is available
+            code += generate_textbox_code(t, '', slide_object_name, textbox_visible, textbox_content, theme, tmp_dir, is_title=is_title)
 
     for f in figure_arrangement_list:
         if img_path is None:

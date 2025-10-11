@@ -66,6 +66,11 @@ def get_model_encoding(value_for_tiktoken: str):
             ModelType.O1.value,
             ModelType.O1_MINI.value,
             ModelType.O1_PREVIEW.value,
+            ModelType.O3.value,
+            ModelType.O3_MINI.value,
+            ModelType.GPT_5.value,
+            ModelType.GPT_5_MINI.value,
+            ModelType.GPT_5_NANO.value,
         ]:
             encoding = tiktoken.get_encoding("o200k_base")
         else:
@@ -109,7 +114,7 @@ class OpenAITokenCounter(BaseTokenCounter):
             self.tokens_per_message = 4
             # If there's a name, the role is omitted
             self.tokens_per_name = -1
-        elif ("gpt-3.5-turbo" in self.model) or ("gpt-4" in self.model):
+        elif ("gpt-3.5-turbo" in self.model) or ("gpt-4" in self.model) or ("gpt-5" in self.model):
             self.tokens_per_message = 3
             self.tokens_per_name = 1
         elif ("o1" in self.model) or ("o3" in self.model):

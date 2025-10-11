@@ -60,7 +60,7 @@ template: |
         "alignment": "left",
         "bullet": false,
         "level": 0,
-        "font_size": 60,
+        "font_size": {{ section_title_font_size }},
         "runs": [
           {
             "text": "Methodology",
@@ -74,7 +74,7 @@ template: |
         "alignment": "left",
         "bullet": true,
         "level": 0,
-        "font_size": 48,
+        "font_size": {{ bullet_font_size }},
         "runs": [
           {
             "text": "Key point about domain-invariant component analysis."
@@ -85,7 +85,7 @@ template: |
         "alignment": "left",
         "bullet": true,
         "level": 1,
-        "font_size": 48,
+        "font_size": {{ bullet_font_size }},
         "runs": [
           {
             "text": "Supporting detail.",
@@ -103,7 +103,7 @@ template: |
         "alignment": "left",
         "bullet": false,
         "level": 0,
-        "font_size": 60,
+        "font_size": {{ section_title_font_size }},
         "runs": [
           {
             "text": "Experimental results",
@@ -117,7 +117,7 @@ template: |
         "alignment": "left",
         "bullet": true,
         "level": 0,
-        "font_size": 48,
+        "font_size": {{ bullet_font_size }},
         "runs": [
           {
             "text": "Primary finding, bullet 1."
@@ -128,7 +128,7 @@ template: |
         "alignment": "left",
         "bullet": true,
         "level": 0,
-        "font_size": 48,
+        "font_size": {{ bullet_font_size }},
         "runs": [
           {
             "text": "Primary finding, bullet 2."
@@ -141,7 +141,7 @@ template: |
         "alignment": "left",
         "bullet": true,
         "level": 0,
-        "font_size": 48,
+        "font_size": {{ bullet_font_size }},
         "runs": [
           {
             "text": "Additional commentary, bullet 1."
@@ -152,7 +152,7 @@ template: |
         "alignment": "left",
         "bullet": true,
         "level": 0,
-        "font_size": 48,
+        "font_size": {{ bullet_font_size }},
         "runs": [
           {
             "text": "Additional commentary, bullet 2."
@@ -175,3 +175,5 @@ jinja_args:
   - summary_of_section
   - number_of_textboxes
   - section_title
+  - bullet_font_size
+  - section_title_font_size

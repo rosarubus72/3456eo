@@ -143,16 +143,25 @@ def ppt_to_images(file: str, output_dir: str, warning: bool = False, dpi=72, out
         print(f"ppt2images: {output_dir} already exists")
     os.makedirs(output_dir, exist_ok=True)
     with tempfile.TemporaryDirectory() as temp_dir:
-        command_list = [
-            "soffice",
-            "--headless",
-            "--convert-to",
-            "pdf",
-            file,
-            "--outdir",
-            temp_dir,
-        ]
-        subprocess.run(command_list, check=True, stdout=subprocess.DEVNULL)
+        # Create unique user installation directory for LibreOffice to avoid concurrency issues
+        with tempfile.TemporaryDirectory() as user_install_dir:
+            command_list = [
+                "soffice",
+                "--headless",
+                "--norestore",
+                "--nolockcheck",
+                f"-env:UserInstallation=file://{user_install_dir}",
+                "--convert-to",
+                "pdf",
+                file,
+                "--outdir",
+                temp_dir,
+            ]
+            # Set environment to ensure UTF-8 encoding
+            env = os.environ.copy()
+            env['LC_ALL'] = 'en_US.UTF-8'
+            env['LANG'] = 'en_US.UTF-8'
+            subprocess.run(command_list, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, env=env)
 
         for f in os.listdir(temp_dir):
             if not f.endswith(".pdf"):
@@ -178,16 +187,21 @@ def wmf_to_images(blob: bytes, filepath: str):
     with tempfile.TemporaryDirectory() as temp_dir:
         with open(pjoin(temp_dir, f"{basename}.wmf"), "wb") as f:
             f.write(blob)
-        command_list = [
-            "soffice",
-            "--headless",
-            "--convert-to",
-            "jpg",
-            pjoin(temp_dir, f"{basename}.wmf"),
-            "--outdir",
-            dirname,
-        ]
-        subprocess.run(command_list, check=True, stdout=subprocess.DEVNULL)
+        # Create unique user installation directory for LibreOffice to avoid concurrency issues
+        with tempfile.TemporaryDirectory() as user_install_dir:
+            command_list = [
+                "soffice",
+                "--headless",
+                "--norestore",
+                "--nolockcheck",
+                f"-env:UserInstallation=file://{user_install_dir}",
+                "--convert-to",
+                "jpg",
+                pjoin(temp_dir, f"{basename}.wmf"),
+                "--outdir",
+                dirname,
+            ]
+            subprocess.run(command_list, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     assert pexists(filepath), f"File {filepath} does not exist"
 

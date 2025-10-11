@@ -1,37 +1,32 @@
 from PosterAgent.parse_raw import parse_raw, gen_image_and_table
 from PosterAgent.gen_outline_layout import filter_image_table, gen_outline_layout_v2
-from utils.wei_utils import get_agent_config, utils_functions, run_code, style_bullet_content, scale_to_target_area, char_capacity
+from utils.wei_utils import get_agent_config, utils_functions, run_code, scale_to_target_area, char_capacity
 from PosterAgent.tree_split_layout import main_train, main_inference, get_arrangments_in_inches, split_textbox, to_inches
 from PosterAgent.gen_pptx_code import generate_poster_code
 from utils.src.utils import ppt_to_images
 from PosterAgent.gen_poster_content import gen_bullet_point_content
 from utils.ablation_utils import no_tree_get_layout
 
+# Import refactored utilities
+from utils.logo_utils import LogoManager, add_logos_to_poster_code
+from utils.config_utils import (
+    load_poster_yaml_config, extract_font_sizes, extract_colors,
+    extract_vertical_alignment, extract_section_title_symbol, normalize_config_values
+)
+from utils.style_utils import apply_all_styles
+from utils.theme_utils import get_default_theme, create_theme_with_alignment, resolve_colors
+
 import argparse
 import json
 import os
 import time
+import shutil
 
 units_per_inch = 25
 
-# Create your theme profile here
-theme_title_text_color = (255, 255, 255)
-theme_title_fill_color = (47, 85, 151)
-theme = {
-    'panel_visible': True,
-    'textbox_visible': False,
-    'figure_visible': False,
-    'panel_theme': {
-        'color': theme_title_fill_color,
-        'thickness': 5,
-        'line_style': 'solid',
-    },
-    'textbox_theme': None,
-    'figure_theme': None,
-}
-
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Poster Generation Pipeline')
+
+    parser = argparse.ArgumentParser(description='Poster Generation Pipeline with Logo Support')
     parser.add_argument('--poster_path', type=str)
     parser.add_argument('--model_name_t', type=str, default='4o')
     parser.add_argument('--model_name_v', type=str, default='4o')
@@ -46,6 +41,16 @@ if __name__ == '__main__':
     parser.add_argument('--ablation_no_tree_layout', action='store_true', help='Ablation study: no tree layout')
     parser.add_argument('--ablation_no_commenter', action='store_true', help='Ablation study: no commenter')
     parser.add_argument('--ablation_no_example', action='store_true', help='Ablation study: no example')
+
+    # Logo-related arguments
+    parser.add_argument('--conference_venue', type=str, default=None,
+                       help='Conference name for automatic logo search (e.g., "NeurIPS", "CVPR")')
+    parser.add_argument('--institution_logo_path', type=str, default=None,
+                       help='Custom path to institution logo (auto-searches from paper metadata if not provided)')
+    parser.add_argument('--conference_logo_path', type=str, default=None,
+                       help='Custom path to conference logo (auto-searches if venue specified)')
+    parser.add_argument('--use_google_search', action='store_true',
+                       help='Use Google Custom Search API for logo search (requires API keys in .env)')
 
     args = parser.parse_args()
 
@@ -115,6 +120,63 @@ if __name__ == '__main__':
     detail_log['parser_in_t'] = input_token
     detail_log['parser_out_t'] = output_token
 
+    # Initialize LogoManager
+    logo_manager = LogoManager()
+    institution_logo_path = args.institution_logo_path
+    conference_logo_path = args.conference_logo_path
+
+    # Auto-detect institution from paper if not provided
+    # Now using the raw_result directly instead of reading from file
+    if not institution_logo_path:
+        print("\n" + "="*60)
+        print("🔍 AUTO-DETECTING INSTITUTION FROM PAPER")
+        print("="*60)
+
+        # Use the raw_result we already have from the parser
+        if raw_result:
+            print(f"📄 Using parsed paper content")
+            # Extract text content from the ConversionResult object
+            try:
+                paper_text = raw_result.document.export_to_markdown()
+            except:
+                # Fallback: try to get text content in another way
+                paper_text = str(raw_result)
+
+            print("🔎 Searching for FIRST AUTHOR's institution...")
+            first_author_inst = logo_manager.extract_first_author_institution(paper_text)
+
+            if first_author_inst:
+                print(f"\n✅ FIRST AUTHOR INSTITUTION: {first_author_inst}")
+                print(f"🔍 Searching for logo: {first_author_inst}")
+
+                inst_logo_path = logo_manager.get_logo_path(first_author_inst, category="institute", use_google=args.use_google_search)
+                if inst_logo_path:
+                    institution_logo_path = str(inst_logo_path)
+                    print(f"✅ Institution logo found: {institution_logo_path}")
+                else:
+                    print(f"❌ Could not find/download logo for: {first_author_inst}")
+            else:
+                print("❌ No first author institution detected or matched with available logos")
+        else:
+            print("❌ No parsed content available")
+        print("="*60 + "\n")
+
+    # Handle conference logo
+    if args.conference_venue and not conference_logo_path:
+        print("\n" + "="*60)
+        print("🏛️ SEARCHING FOR CONFERENCE LOGO")
+        print("="*60)
+        print(f"📍 Conference: {args.conference_venue}")
+        print(f"🔍 Searching for logo...")
+
+        conf_logo_path = logo_manager.get_logo_path(args.conference_venue, category="conference", use_google=args.use_google_search)
+        if conf_logo_path:
+            conference_logo_path = str(conf_logo_path)
+            print(f"✅ Conference logo found: {conference_logo_path}")
+        else:
+            print(f"❌ Could not find/download logo for: {args.conference_venue}")
+            # Note: Web search is now handled inside get_logo_path automatically
+        print("="*60 + "\n")
 
     # Step 2: Filter unnecessary images and tables
     input_token, output_token = filter_image_table(args, agent_config_t)
@@ -148,10 +210,10 @@ if __name__ == '__main__':
 
     if args.ablation_no_tree_layout:
         panel_arrangement, figure_arrangement, text_arrangement, input_token, output_token = no_tree_get_layout(
-            poster_width, 
-            poster_height, 
-            panels, 
-            figures, 
+            poster_width,
+            poster_height,
+            panels,
+            figures,
             agent_config_t
         )
         total_input_tokens_t += input_token
@@ -177,7 +239,7 @@ if __name__ == '__main__':
         text_arrangement = text_arrangement[1:]
         # Split the title textbox into two parts
         text_arrangement_title_top, text_arrangement_title_bottom = split_textbox(
-            text_arrangement_title, 
+            text_arrangement_title,
             0.8
         )
         # Add the split textboxes back to the list
@@ -199,9 +261,9 @@ if __name__ == '__main__':
                 figure_path = tables[str(figure_id)]['table_path']
             else:
                 figure_path = tables[figure_id]['table_path']
-        
+
         figure_arrangement[i]['figure_path'] = figure_path
-        
+
     for text_arrangement_item in text_arrangement:
         num_chars = char_capacity(
             bbox=(text_arrangement_item['x'], text_arrangement_item['y'], text_arrangement_item['height'], text_arrangement_item['width'])
@@ -237,7 +299,36 @@ if __name__ == '__main__':
 
     layout_time = time.time()
 
+    # === Configuration Loading ===
+    print("\n📋 Loading configuration from YAML files...", flush=True)
+    yaml_cfg = load_poster_yaml_config(args.poster_path)
+
+    # Extract configuration values
+    bullet_fs, title_fs, poster_title_fs, poster_author_fs = extract_font_sizes(yaml_cfg)
+    title_text_color, title_fill_color, main_text_color, main_text_fill_color = extract_colors(yaml_cfg)
+    section_title_vertical_align = extract_vertical_alignment(yaml_cfg)
+    section_title_symbol = extract_section_title_symbol(yaml_cfg)
+
+    # Normalize configuration values
+    bullet_fs, title_fs, poster_title_fs, poster_author_fs, \
+    title_text_color, title_fill_color, main_text_color, main_text_fill_color = normalize_config_values(
+        bullet_fs, title_fs, poster_title_fs, poster_author_fs,
+        title_text_color, title_fill_color, main_text_color, main_text_fill_color
+    )
+
+    # Store configuration in args
+    setattr(args, 'bullet_font_size', bullet_fs)
+    setattr(args, 'section_title_font_size', title_fs)
+    setattr(args, 'poster_title_font_size', poster_title_fs)
+    setattr(args, 'poster_author_font_size', poster_author_fs)
+    setattr(args, 'title_text_color', title_text_color)
+    setattr(args, 'title_fill_color', title_fill_color)
+    setattr(args, 'main_text_color', main_text_color)
+    setattr(args, 'main_text_fill_color', main_text_fill_color)
+    setattr(args, 'section_title_vertical_align', section_title_vertical_align)
+
     # Step 5: Generate content
+    print(f"\n✍️ Generating poster content (max_workers={args.max_workers})...", flush=True)
     input_token_t, output_token_t, input_token_v, output_token_v = gen_bullet_point_content(args, agent_config_t, agent_config_v, tmp_dir=args.tmp_dir)
     total_input_tokens_t += input_token
     total_output_tokens_t += output_token
@@ -258,16 +349,39 @@ if __name__ == '__main__':
     detail_log['content_out_t'] = output_token_t
     detail_log['content_in_v'] = input_token_v
     detail_log['content_out_v'] = output_token_v
-    
-    # Step 6: Apply basic styles
-    for k, v in bullet_content[0].items():
-        style_bullet_content(v, theme_title_text_color, theme_title_fill_color)
 
-    for i in range(1, len(bullet_content)):
-        curr_content = bullet_content[i]
-        style_bullet_content(curr_content['title'], theme_title_text_color, theme_title_fill_color)
+    # === Style Application ===
+    print("\n🎨 Applying styles and colors...", flush=True)
 
-    # Step 7: Generate the PowerPoint
+    # Resolve colors with fallbacks
+    final_title_text_color, final_title_fill_color, final_main_text_color, final_main_text_fill_color = resolve_colors(
+        getattr(args, 'title_text_color', None),
+        getattr(args, 'title_fill_color', None),
+        getattr(args, 'main_text_color', None),
+        getattr(args, 'main_text_fill_color', None)
+    )
+
+    # Apply all styles in one go
+    bullet_content = apply_all_styles(
+        bullet_content,
+        title_text_color=final_title_text_color,
+        title_fill_color=final_title_fill_color,
+        main_text_color=final_main_text_color,
+        main_text_fill_color=final_main_text_fill_color,
+        section_title_symbol=section_title_symbol,
+        main_text_font_size=bullet_fs
+    )
+
+    # === Poster Generation ===
+    print("\n🎯 Generating PowerPoint code...", flush=True)
+
+    # Create theme with alignment
+    base_theme = get_default_theme()
+    theme_with_alignment = create_theme_with_alignment(
+        base_theme,
+        getattr(args, 'section_title_vertical_align', None)
+    )
+
     poster_code = generate_poster_code(
         panel_arrangement_inches,
         text_arrangement_inches,
@@ -281,17 +395,36 @@ if __name__ == '__main__':
         save_path=f'{args.tmp_dir}/poster.pptx',
         visible=False,
         content=bullet_content,
-        theme=theme,
+        theme=theme_with_alignment,
         tmp_dir=args.tmp_dir,
+    )
+
+    # Add logos to the poster
+    print("\n🖼️ Adding logos to poster...", flush=True)
+    poster_code = add_logos_to_poster_code(
+        poster_code,
+        width_inch,
+        height_inch,
+        institution_logo_path=institution_logo_path,
+        conference_logo_path=conference_logo_path
     )
 
     output, err = run_code(poster_code)
     if err is not None:
         raise RuntimeError(f'Error in generating PowerPoint: {err}')
-    
+
     # Step 8: Create a folder in the output directory
     output_dir = f'<{args.model_name_t}_{args.model_name_v}>_generated_posters/{args.poster_path.replace("paper.pdf", "")}'
     os.makedirs(output_dir, exist_ok=True)
+
+    # Copy logos to output directory for reference
+    logos_dir = os.path.join(output_dir, 'logos')
+    if institution_logo_path or conference_logo_path:
+        os.makedirs(logos_dir, exist_ok=True)
+        if institution_logo_path and os.path.exists(institution_logo_path):
+            shutil.copy2(institution_logo_path, os.path.join(logos_dir, 'institution_logo' + os.path.splitext(institution_logo_path)[1]))
+        if conference_logo_path and os.path.exists(conference_logo_path):
+            shutil.copy2(conference_logo_path, os.path.join(logos_dir, 'conference_logo' + os.path.splitext(conference_logo_path)[1]))
 
     # Step 9: Move poster.pptx to the output directory
     pptx_path = os.path.join(output_dir, f'{poster_name}.pptx')
@@ -317,9 +450,20 @@ if __name__ == '__main__':
             'input_tokens_v': total_input_tokens_v,
             'output_tokens_v': total_output_tokens_v,
             'time_taken': time_taken,
+            'institution_logo': institution_logo_path,
+            'conference_logo': conference_logo_path,
         }
         json.dump(log_data, f, indent=4)
 
     detail_log_file = os.path.join(output_dir, 'detail_log.json')
     with open(detail_log_file, 'w') as f:
         json.dump(detail_log, f, indent=4)
+
+    print(f'\nTotal time: {time_taken:.2f} seconds')
+    print(f'Total text model tokens: {total_input_tokens_t} -> {total_output_tokens_t}')
+    print(f'Total vision model tokens: {total_input_tokens_v} -> {total_output_tokens_v}')
+
+    if institution_logo_path:
+        print(f'Institution logo added: {institution_logo_path}')
+    if conference_logo_path:
+        print(f'Conference logo added: {conference_logo_path}')

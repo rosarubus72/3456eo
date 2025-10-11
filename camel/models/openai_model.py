@@ -107,12 +107,16 @@ class OpenAIModel(BaseModelBackend):
         """
         # o1-preview and o1-mini have Beta limitations
         # reference: https://platform.openai.com/docs/guides/reasoning
+        # GPT-5 models also have similar restrictions
         if self.model_type in [
             ModelType.O1,
             ModelType.O1_MINI,
             ModelType.O1_PREVIEW,
             ModelType.O3_MINI,
-            ModelType.O3
+            ModelType.O3,
+            ModelType.GPT_5,
+            ModelType.GPT_5_MINI,
+            ModelType.GPT_5_NANO,
         ]:
             # warnings.warn(
             #     "Warning: You are using an O1 model (O1_MINI or O1_PREVIEW), "

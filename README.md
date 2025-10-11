@@ -39,9 +39,13 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 ---
 
 ## Updates
-Parallelization is now supported! Simply specify as hyper parameter `--max_workers`.
+**Logo Support**: Automatically add conference and institution logos to posters (see examples below)
 
-E.g. `--max_workers=5`
+**Style Customization**: YAML control over style. New default theme.
+
+**Parallelization**: Generate poster sections in parallel with `--max_workers` for faster generation
+
+E.g. `--max_workers=10`
 
 ## 🛠️ Installation
 Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html)) or API-based access (e.g., GPT-4o).
@@ -69,6 +73,15 @@ Create a `.env` file in the project root and add your OpenAI API key:
 
 ```bash
 OPENAI_API_KEY=<your_openai_api_key>
+```
+
+**Optional: Google Search API (for logo search)**
+
+To use Google Custom Search for more reliable logo search, add these to your `.env` file:
+
+```bash
+GOOGLE_SEARCH_API_KEY=<your_google_search_api_key>
+GOOGLE_SEARCH_ENGINE_ID=<your_search_engine_id>
 ```
 
 ---
@@ -117,6 +130,39 @@ python -m PosterAgent.new_pipeline \
 ```
 
 PosterAgent **supports flexible combination of LLM / VLM**, feel free to try other options, or customize your own settings in `get_agent_config()` in [`utils/wei_utils.py`](utils/wei_utils.py).
+
+### Adding Logos to Posters
+
+You can automatically add institutional and conference logos to your posters:
+
+```bash
+python -m PosterAgent.new_pipeline \
+    --poster_path="${dataset_dir}/${paper_name}/paper.pdf" \
+    --model_name_t="4o" \
+    --model_name_v="4o" \
+    --poster_width_inches=48 \
+    --poster_height_inches=36 \
+    --conference_venue="NeurIPS"  # Automatically searches for conference logo
+```
+
+**Logo Search Strategy:**
+1. **Local search**: First checks the provided logo store (`logo_store/institutes/` and `logo_store/conferences/`)
+2. **Web search**: If not found locally, performs online search
+   - By default, uses DuckDuckGo (no API key required)
+   - For more reliable results, use `--use_google_search` (requires `GOOGLE_SEARCH_API_KEY` and `GOOGLE_SEARCH_ENGINE_ID` in `.env`)
+
+You can also specify custom logo paths to skip auto-detection:
+```bash
+--institution_logo_path="path/to/institution_logo.png" \
+--conference_logo_path="path/to/conference_logo.png"
+```
+
+### YAML Style Customization
+
+Customize poster appearance via YAML configuration files:
+- **Global defaults**: `config/poster.yaml` (applies to all posters)
+- **Per-poster override**: Place `poster.yaml` next to your `paper.pdf` for custom styling
+
 
 ## 🔮 Evaluation
 Download Paper2Poster evaluation dataset via:

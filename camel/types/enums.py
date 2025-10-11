@@ -43,6 +43,10 @@ class ModelType(UnifiedModelType, Enum):
     O1_MINI = "o1-mini"
     O3_MINI = "o3-mini"
 
+    GPT_5 = "gpt-5"
+    GPT_5_MINI = "gpt-5-mini"
+    GPT_5_NANO = "gpt-5-nano"
+
     GLM_4 = "glm-4"
     GLM_4V = 'glm-4v'
     GLM_3_TURBO = "glm-3-turbo"
@@ -239,6 +243,9 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.O1_MINI,
             ModelType.O3_MINI,
             ModelType.O3,
+            ModelType.GPT_5,
+            ModelType.GPT_5_MINI,
+            ModelType.GPT_5_NANO,
         }
     
     @property
@@ -264,6 +271,9 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.GPT_4O,
             ModelType.GPT_4O_LATEST,
             ModelType.GPT_4O_MINI,
+            ModelType.GPT_5,
+            ModelType.GPT_5_MINI,
+            ModelType.GPT_5_NANO,
         }
 
     @property
@@ -647,6 +657,12 @@ class ModelType(UnifiedModelType, Enum):
             ModelType.GPT_4_1_MINI
         }:
             return 1_047_576
+        elif self in {
+            ModelType.GPT_5,
+            ModelType.GPT_5_MINI,
+            ModelType.GPT_5_NANO,
+        }:
+            return 1_048_576  # GPT-5 family with 1M+ token context
         elif self in {
             ModelType.GEMINI_1_5_FLASH,
             ModelType.GEMINI_1_5_PRO,

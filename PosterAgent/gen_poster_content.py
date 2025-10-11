@@ -194,6 +194,8 @@ def gen_poster_title_content(args, actor_config):
 
     jinja_args = {
         'title_string': title_string,
+        'title_font_size': getattr(args, 'poster_title_font_size', None) or getattr(args, 'title_font_size', None),
+        'author_font_size': getattr(args, 'poster_author_font_size', None) or getattr(args, 'author_font_size', None),
     }
     prompt = template.render(**jinja_args)
     # Step the actor_agent and track tokens
@@ -269,6 +271,8 @@ def gen_bullet_point_content(args, actor_config, critic_config, agent_modify=Tru
             'summary_of_section': raw_content['sections'][i]['content'],
             'number_of_textboxes': num_textboxes,
             'section_title': raw_content['sections'][i]['title'],
+            'bullet_font_size': args.bullet_font_size,
+            'section_title_font_size': args.section_title_font_size,
         }
 
         target_textboxes = textboxes_by_panel[i][1:]  # skip first (section title)

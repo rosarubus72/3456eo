@@ -8,7 +8,7 @@ system_prompt: |
       "alignment": "center",
       "bullet": false,
       "level": 0,
-      "font_size": 60,
+      "font_size": {{ title_font_size }},
       "runs": [
         {
           "text": "<extracted paper title>",
@@ -23,7 +23,7 @@ system_prompt: |
         "alignment": "center",
         "bullet": false,
         "level": 0,
-        "font_size": 36,
+        "font_size": {{ author_font_size }},
         "runs": [
           {
             "text": "<authors with superscript numerals>"
@@ -34,7 +34,7 @@ system_prompt: |
         "alignment": "center",
         "bullet": false,
         "level": 0,
-        "font_size": 36,
+        "font_size": {{ author_font_size }},
         "runs": [
           {
             "text": "<affiliations with matching numerals>"
@@ -52,11 +52,11 @@ template: |
   Instructions:
     1. Parse the input "title_string" to separate the paper title from the authors and their affiliations.
     2. Create the JSON structure with keys "title" and "textbox1".
-    3. Under "title", provide an array with one bullet item containing the paper title, centered, not a bullet, level 0, font size 66, bold text.
+    3. Under "title", provide an array with one bullet item containing the paper title, centered, not a bullet, level 0, font size {{ title_font_size }}, bold text.
     4. Under "textbox1", provide an array with one bullet item containing:
        • The authors (in a single line) with superscripted numerals.
        • The corresponding affiliations on the next line with matching numerals.
-       Both runs should be in the same bullet item, centered, not bullets, level 0, font size 48.
+       Both runs should be in the same bullet item, centered, not bullets, level 0, font size {{ author_font_size }}.
     5. Return only the JSON object.
 
   title_string:
@@ -64,3 +64,5 @@ template: |
 
 jinja_args:
   - title_string
+  - title_font_size
+  - author_font_size
