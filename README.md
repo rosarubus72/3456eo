@@ -1,4 +1,5 @@
 # 🎓Paper2Poster: Multimodal Poster Automation from Scientific Papers
+# 从学术论文自动生成学术海报
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.21497" target="_blank"><img src="https://img.shields.io/badge/arXiv-2505.21497-red"></a>
@@ -14,6 +15,7 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 
 
 ## 🔥 Update
+- [x] [2025.10.13] Added automatic **logo support** for conferences and institutions, **YAML-based style customization**, a new default theme.
 - [x] [2025.9.18] Paper2Poster has been accepted to **NeurIPS 2025 Dataset and Benchmark Track**.
 - [x] [2025.9.3]  We now support generate per section content in **parallel** for faster generation, by simply specifying `--max_workers`.
 - [x] [2025.5.27] We release the [arXiv](https://arxiv.org/abs/2505.21497), [code](https://github.com/Paper2Poster/Paper2Poster) and [`dataset`](https://huggingface.co/datasets/Paper2Poster/Paper2Poster)
@@ -37,15 +39,6 @@ We address **How to create a poster from a paper** and **How to evaluate poster.
 - [🚀 Quick Start](#-quick-start)
 - [🔮 Evaluation](#-evaluation)
 ---
-
-## Updates
-**Logo Support**: Automatically add conference and institution logos to posters (see examples below)
-
-**Style Customization**: YAML control over style. New default theme.
-
-**Parallelization**: Generate poster sections in parallel with `--max_workers` for faster generation
-
-E.g. `--max_workers=10`
 
 ## 🛠️ Installation
 Our Paper2Poster supports both local deployment (via [vLLM](https://docs.vllm.ai/en/v0.6.6/getting_started/installation.html)) or API-based access (e.g., GPT-4o).
